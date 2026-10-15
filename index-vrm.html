@@ -66,6 +66,127 @@
  }
 }
 </script>
+
+<style>
+/* VEXYRA CORRECAO CHAT */
+.music-player {
+    display: none !important;
+}
+.char-column {
+    min-height: 380px !important;
+}
+.chat-column {
+    min-height: 420px !important;
+    height: auto !important;
+}
+.chat-logs {
+    min-height: 280px !important;
+    max-height: 450px !important;
+    overflow-y: auto !important;
+}
+.chat-input-box {
+    position: relative !important;
+    z-index: 2;
+}
+</style>
+
+
+<style>
+/* VEXYRA LAYOUT 3 COLUNAS */
+
+/* Interface completa no computador */
+.main-wrapper {
+    display: grid !important;
+    grid-template-columns: minmax(250px, 1.1fr)
+                           minmax(300px, 1fr)
+                           260px !important;
+    overflow: hidden !important;
+    min-width: 0;
+}
+
+.char-column,
+.chat-column,
+.control-column {
+    min-width: 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
+}
+
+.chat-column {
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.chat-logs {
+    flex: 1 !important;
+    overflow-y: auto !important;
+}
+
+#personagem3d {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 300px !important;
+}
+
+/* Interface compacta no celular */
+@media (max-width: 768px) {
+    body {
+        overflow: hidden !important;
+    }
+
+    .main-wrapper {
+        display: grid !important;
+        grid-template-columns: 34% 40% 26% !important;
+        flex-direction: row !important;
+        overflow: hidden !important;
+        height: calc(100dvh - 110px) !important;
+    }
+
+    .char-column {
+        padding: 3px !important;
+        border-right: 1px solid #29304a !important;
+    }
+
+    .chat-column {
+        border-right: 1px solid #29304a !important;
+    }
+
+    .control-column {
+        width: auto !important;
+        padding: 5px !important;
+        overflow-y: auto !important;
+    }
+
+    .chat-logs {
+        min-height: 0 !important;
+        max-height: none !important;
+    }
+
+    .chat-input-box {
+        padding: 5px !important;
+        flex-wrap: wrap;
+    }
+
+    .chat-input-box input {
+        width: 100% !important;
+        flex: 1 1 100% !important;
+    }
+
+    .chat-input-box button {
+        min-height: 32px;
+    }
+
+    #personagem3d {
+        min-height: 0 !important;
+        flex: 1 !important;
+    }
+
+    .top-tabs {
+        overflow-x: auto !important;
+    }
+}
+</style>
+
 </head>
 <body>
 
