@@ -58,5 +58,60 @@ if(conversations.length){current=conversations[0].id;render()}else start();
 </style>
 <div class="vex-avatar" title="Avatar VEXYRA"></div>
 
+
+<style>
+#avatar-studio {
+  margin: 20px auto;
+  padding: 18px;
+  max-width: 380px;
+  background: #171126;
+  border: 1px solid #854dff;
+  border-radius: 18px;
+  color: white;
+  text-align: center;
+}
+#avatar-studio select {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  background: #29203c;
+  color: white;
+  border: 1px solid #854dff;
+  border-radius: 10px;
+}
+#avatar-preview {
+  font-size: 75px;
+  margin: 12px;
+}
+</style>
+
+<section id="avatar-studio">
+  <h2>✦ Avatar Studio</h2>
+  <div id="avatar-preview">👩🏻‍🚀</div>
+  <label for="avatar-gender">Escolha seu personagem</label>
+  <select id="avatar-gender">
+    <option value="female">Feminino</option>
+    <option value="male">Masculino</option>
+  </select>
+</section>
+
+<script>
+(() => {
+  const select = document.getElementById('avatar-gender');
+  const preview = document.getElementById('avatar-preview');
+
+  select.value = localStorage.getItem('vexyra-avatar') || 'female';
+
+  function atualizar() {
+    preview.textContent =
+      select.value === 'male' ? '👨🏻‍🚀' : '👩🏻‍🚀';
+    localStorage.setItem('vexyra-avatar', select.value);
+  }
+
+  select.addEventListener('change', atualizar);
+  atualizar();
+})();
+</script>
+
 </body>
 </html>
