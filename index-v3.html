@@ -103,8 +103,7 @@ if(conversations.length){current=conversations[0].id;render()}else start();
   select.value = localStorage.getItem('vexyra-avatar') || 'female';
 
   function atualizar() {
-    preview.dataset.genero =
-      select.value === 'male' ? '👨🏻‍🚀' : '👩🏻‍🚀';
+    preview.dataset.genero = select.value;
     localStorage.setItem('vexyra-avatar', select.value);
   }
 
