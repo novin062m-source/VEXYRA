@@ -103,16 +103,21 @@
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ message: texto })
+        body: JSON.stringify({ mensagem: texto })
       }
     );
 
-    const dados = await resposta.json();
-    adicionar("VEXYRA: " + (dados.reply || dados.response || dados.error || JSON.stringify(dados)));
-  } catch (erro) {
-    adicionar("VEXYRA: Erro de conexão.");
-  }
-});
+         const dados = await resposta.json();
+
+      adicionar(
+        "VEXYRA: " + (dados.resposta || dados.erro || "Não consegui responder.")
+      );
+
+    } catch (erro) {
+      adicionar("VEXYRA: Erro de conexão.");
+    }
+  });
+
   </script>
 </body>
 </html>
