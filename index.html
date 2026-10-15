@@ -5,125 +5,145 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>VEXYRA 0.1</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
-        body { background-color: #06090f; color: #f8fafc; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        body { background-color: #080c14; color: #f8fafc; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
-        /* Topo Móvel */
-        .header-bar { background: #0b0f17; border-bottom: 1px solid #1e293b; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; z-index: 10; }
-        .logo-title { font-size: 16px; font-weight: bold; color: #a855f7; display: flex; align-items: center; gap: 8px; }
-        .status-badge { font-size: 10px; background: rgba(34,197,94,0.15); color: #22c55e; border: 1px solid rgba(34,197,94,0.3); padding: 3px 8px; border-radius: 12px; }
+        /* Topo */
+        .header { background: #0f172a; border-bottom: 1px solid #1e293b; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; }
+        .title { font-size: 18px; font-weight: bold; color: #c084fc; letter-spacing: 0.5px; }
+        .status { font-size: 11px; color: #22c55e; background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.3); padding: 3px 8px; border-radius: 12px; }
 
-        /* Áreas Principais Divididas em Abas ou Módulo Flex */
-        .app-container { flex: 1; display: flex; flex-direction: column; overflow-y: auto; position: relative; }
+        /* Container Principal */
+        .main-container { flex: 1; display: flex; flex-direction: column; overflow-y: auto; }
 
-        /* Banner da Personagem Viva VRChat / Anime HQ */
-        .character-card { position: relative; width: 100%; height: 320px; background: #0f172a; overflow: hidden; display: flex; align-items: flex-end; justify-content: center; }
-        .char-img { width: 100%; height: 100%; object-fit: cover; object-position: top center; transition: all 0.4s ease; filter: brightness(0.95); }
-        .char-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(6,9,15,1) 0%, rgba(6,9,15,0.4) 60%, transparent 100%); padding: 15px; display: flex; flex-direction: column; gap: 6px; }
-        .speech-bubble { background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(168, 85, 247, 0.4); padding: 10px 14px; border-radius: 12px; font-size: 12px; color: #e2e8f0; backdrop-filter: blur(8px); box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        /* Área do Avatar Vivo */
+        .avatar-area { background: radial-gradient(circle at center, #1e1b4b 0%, #080c14 80%); height: 260px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; border-bottom: 1px solid #1e293b; flex-shrink: 0; }
+        .avatar-svg { width: 180px; height: 180px; }
 
-        /* Painel de Controle de Personalização */
-        .controls-panel { background: #0b0f17; border-top: 1px solid #1e293b; border-bottom: 1px solid #1e293b; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
-        .panel-label { font-size: 10px; color: #64748b; text-transform: uppercase; font-weight: bold; letter-spacing: 0.5px; }
-        .buttons-row { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; }
-        .btn-opt { background: #111827; border: 1px solid #1f2937; color: #cbd5e1; padding: 8px 14px; border-radius: 8px; font-size: 11px; font-weight: 600; white-space: nowrap; cursor: pointer; transition: 0.2s; }
-        .btn-opt:active, .btn-opt.active { background: #2e1065; border-color: #a855f7; color: #c084fc; }
+        /* Balão de Fala */
+        .speech-bubble { position: absolute; bottom: 10px; background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(168, 85, 247, 0.4); padding: 8px 14px; border-radius: 12px; font-size: 12px; color: #e2e8f0; max-width: 90%; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
 
-        /* Seção do Chat */
-        .chat-container { flex: 1; min-height: 250px; background: #06090f; display: flex; flex-direction: column; }
-        .messages-list { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
-        .msg { padding: 10px 14px; border-radius: 10px; font-size: 13px; max-width: 85%; line-height: 1.4; }
-        .msg.vexyra { background: #111827; border: 1px solid #1f2937; align-self: flex-start; color: #f1f5f9; border-left: 3px solid #a855f7; }
-        .msg.user { background: #1e1b4b; border: 1px solid #312e81; align-self: flex-end; color: #e2e8f0; }
+        /* Controles / Poses */
+        .controls { background: #0f172a; padding: 10px; border-bottom: 1px solid #1e293b; display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
+        .ctrl-title { font-size: 10px; color: #64748b; text-transform: uppercase; font-weight: bold; }
+        .row-btns { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px; }
+        .btn-action { background: #1e293b; border: 1px solid #334155; color: #cbd5e1; padding: 8px 12px; border-radius: 8px; font-size: 12px; white-space: nowrap; cursor: pointer; }
+        .btn-action.active { background: #581c87; border-color: #a855f7; color: #e9d5ff; font-weight: bold; }
 
-        /* Input do Chat */
-        .input-bar { padding: 10px 12px; background: #0b0f17; border-top: 1px solid #1e293b; display: flex; gap: 8px; align-items: center; }
-        .input-bar input { flex: 1; background: #111827; border: 1px solid #374151; padding: 10px 14px; border-radius: 8px; color: white; outline: none; font-size: 13px; }
-        .input-bar button { background: #7c3aed; color: white; border: none; padding: 10px 16px; border-radius: 8px; font-weight: bold; font-size: 13px; cursor: pointer; }
+        /* Chat */
+        .chat-section { flex: 1; min-height: 180px; display: flex; flex-direction: column; background: #080c14; }
+        .chat-logs { flex: 1; padding: 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+        .msg { padding: 10px 12px; border-radius: 10px; font-size: 13px; max-width: 85%; line-height: 1.4; word-break: break-word; }
+        .msg.vexyra { background: #111827; border: 1px solid #1f2937; border-left: 3px solid #a855f7; align-self: flex-start; color: #f1f5f9; }
+        .msg.user { background: #2e1065; border: 1px solid #581c87; align-self: flex-end; color: #f3e8ff; }
+
+        /* Barra de Entrada */
+        .input-wrapper { background: #0f172a; border-top: 1px solid #1e293b; padding: 10px; display: flex; gap: 8px; }
+        .input-wrapper input { flex: 1; background: #1e293b; border: 1px solid #334155; padding: 10px 12px; border-radius: 8px; color: white; outline: none; font-size: 14px; }
+        .input-wrapper button { background: #7c3aed; color: white; border: none; padding: 10px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 14px; }
     </style>
 </head>
 <body>
 
-    <div class="header-bar">
-        <div class="logo-title">VEXYRA 0.1</div>
-        <div class="status-badge">● Online</div>
+    <div class="header">
+        <div class="title">VEXYRA 0.1</div>
+        <div class="status">● Online</div>
     </div>
 
-    <div class="app-container">
-        <!-- Visualização da Personagem VRChat Realista -->
-        <div class="character-card">
-            <img id="vAvatar" class="char-img" src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=1000&auto=format&fit=crop" alt="Vexyra">
-            <div class="char-overlay">
-                <div class="speech-bubble" id="vBubble">Oi Matheus! Estou pronta. Escolha uma pose abaixo ou digite no chat! ✨</div>
+    <div class="main-container">
+        <!-- Avatar SVG Nativo Vivo (Não quebra nem falha) -->
+        <div class="avatar-area">
+            <svg class="avatar-svg" viewBox="0 0 200 200">
+                <!-- Cabelo Traseiro -->
+                <path d="M 40,90 Q 20,160 50,180 Q 100,190 150,180 Q 180,160 160,90 Z" fill="#7e22ce" />
+                
+                <!-- Orelhas Cyber -->
+                <polygon points="40,60 20,10 70,40" fill="#a855f7" />
+                <polygon points="160,60 180,10 130,40" fill="#a855f7" />
+                <polygon points="45,55 30,20 65,40" fill="#f472b6" />
+                <polygon points="155,55 170,20 135,40" fill="#f472b6" />
+
+                <!-- Rosto -->
+                <ellipse cx="100" cy="100" rx="55" ry="50" fill="#ffe0bd" />
+
+                <!-- Cabelo Franja -->
+                <path d="M 45,80 Q 70,40 100,75 Q 130,40 155,80 Q 100,50 45,80 Z" fill="#9333ea" />
+
+                <!-- Olhos -->
+                <g id="eyesGroup">
+                    <ellipse cx="78" cy="95" rx="9" ry="12" fill="#3b82f6" />
+                    <ellipse cx="122" cy="95" rx="9" ry="12" fill="#3b82f6" />
+                    <circle cx="80" cy="92" r="3" fill="#ffffff" />
+                    <circle cx="124" cy="92" r="3" fill="#ffffff" />
+                </g>
+
+                <!-- Bochechas -->
+                <ellipse cx="68" cy="108" rx="7" ry="4" fill="#f472b6" opacity="0.6" />
+                <ellipse cx="132" cy="108" rx="7" ry="4" fill="#f472b6" opacity="0.6" />
+
+                <!-- Boca Animada -->
+                <path id="mouthPath" d="M 90,118 Q 100,126 110,118" stroke="#e11d48" stroke-width="3" fill="none" stroke-linecap="round" />
+            </svg>
+
+            <div class="speech-bubble" id="vBubble">Oi Matheus! Estou 100% pronta. Pode falar comigo ou fazer cálculos! ✨</div>
+        </div>
+
+        <!-- Botões de Controle -->
+        <div class="controls">
+            <div class="ctrl-title">Expressões & Modos</div>
+            <div class="row-btns">
+                <button class="btn-action active" onclick="setEmotion('feliz', this)">😊 Feliz</button>
+                <button class="btn-action" onclick="setEmotion('surpresa', this)">😲 Surpresa</button>
+                <button class="btn-action" onclick="setEmotion('brava', this)">😠 Brava</button>
+                <button class="btn-action" onclick="setEmotion('calculo', this)">🧮 Modo Math</button>
             </div>
         </div>
 
-        <!-- Painel de Controles e Poses Funcionais -->
-        <div class="controls-panel">
-            <div class="panel-label">Animações & Poses</div>
-            <div class="buttons-row">
-                <button class="btn-opt active" onclick="setPose('sentada', this)">🪑 Sentada</button>
-                <button class="btn-opt" onclick="setPose('pe', this)">🚶 De Pé</button>
-                <button class="btn-opt" onclick="setPose('deitada', this)">🛋️ Deitada</button>
-                <button class="btn-opt" onclick="setPose('danca', this)">💃 Dançar</button>
+        <!-- Chat e Cálculos -->
+        <div class="chat-section">
+            <div class="chat-logs" id="chatLogs">
+                <div class="msg vexyra"><b>VEXYRA 0.1:</b> Olá! Digite algo ou mande um cálculo matemático (ex: 25 * 4 ou 150 + 80).</div>
             </div>
 
-            <div class="panel-label">Expressões Faciais</div>
-            <div class="buttons-row">
-                <button class="btn-opt" onclick="setExpression('feliz', this)">😊 Feliz</button>
-                <button class="btn-opt" onclick="setExpression('piscando', this)">😉 Piscar</button>
-                <button class="btn-opt" onclick="setExpression('brava', this)">😠 Brava</button>
-            </div>
-        </div>
-
-        <!-- Lista do Chat -->
-        <div class="chat-container">
-            <div class="messages-list" id="msgBox">
-                <div class="msg vexyra"><b>VEXYRA 0.1:</b> Conectada! Como posso te ajudar hoje?</div>
-            </div>
-
-            <div class="input-bar">
-                <input type="text" id="userInput" placeholder="Digite uma mensagem..." onkeypress="if(event.key==='Enter') sendMsg()">
+            <div class="input-wrapper">
+                <input type="text" id="userInput" placeholder="Escreva uma mensagem ou cálculo..." onkeypress="if(event.key==='Enter') sendMsg()">
                 <button onclick="sendMsg()">Enviar</button>
             </div>
         </div>
     </div>
 
     <script>
-        const avatar = document.getElementById('vAvatar');
+        const mouth = document.getElementById('mouthPath');
+        const eyes = document.getElementById('eyesGroup');
         const bubble = document.getElementById('vBubble');
-        const msgBox = document.getElementById('msgBox');
+        const chatLogs = document.getElementById('chatLogs');
+        let talkingInterval = null;
 
-        // Poses com imagens de alta definição
-        const poses = {
-            'sentada': 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=1000&auto=format&fit=crop',
-            'pe': 'https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=1000&auto=format&fit=crop',
-            'deitada': 'https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=1000&auto=format&fit=crop',
-            'danca': 'https://images.unsplash.com/photo-1563089145-599997674d42?q=80&w=1000&auto=format&fit=crop'
-        };
+        // Piscar automático do Avatar
+        setInterval(() => {
+            eyes.style.display = 'none';
+            setTimeout(() => { eyes.style.display = 'block'; }, 150);
+        }, 3500);
 
-        function setPose(tipo, btn) {
-            setActive(btn);
-            if(poses[tipo]) {
-                avatar.src = poses[tipo];
-                let txt = "Pose alterada para: " + tipo;
-                bubble.innerText = txt;
-                speak(txt);
+        function setEmotion(type, btn) {
+            if(btn) {
+                document.querySelectorAll('.btn-action').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
             }
-        }
 
-        function setExpression(expr, btn) {
-            setActive(btn);
-            let txt = "Mudando expressão para: " + expr;
-            bubble.innerText = txt;
-            speak(txt);
-        }
-
-        function setActive(btn) {
-            if(!btn) return;
-            const parent = btn.parentElement;
-            parent.querySelectorAll('.btn-opt').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+            if(type === 'feliz') {
+                mouth.setAttribute('d', 'M 90,118 Q 100,128 110,118');
+                say("Modo feliz ativado!");
+            } else if(type === 'surpresa') {
+                mouth.setAttribute('d', 'M 93,118 A 7,7 0 1 0 107,118 A 7,7 0 1 0 93,118');
+                say("Uau! O que aconteceu?");
+            } else if(type === 'brava') {
+                mouth.setAttribute('d', 'M 90,124 Q 100,116 110,124');
+                say("Humph! Não me estresse!");
+            } else if(type === 'calculo') {
+                mouth.setAttribute('d', 'M 92,120 L 108,120');
+                say("Modo matemático pronto. Mande sua conta!");
+            }
         }
 
         function sendMsg() {
@@ -131,38 +151,60 @@
             const txt = input.value.trim();
             if(!txt) return;
 
-            // Insere mensagem do usuário
-            msgBox.innerHTML += `<div class="msg user"><b>Você:</b> ${txt}</div>`;
+            // Add mensagem do usuário
+            chatLogs.innerHTML += `<div class="msg user"><b>Você:</b> ${txt}</div>`;
             input.value = "";
-            msgBox.scrollTop = msgBox.scrollHeight;
+            chatLogs.scrollTop = chatLogs.scrollHeight;
 
-            // Resposta automática com fala
+            // Resposta e Cálculo
             setTimeout(() => {
-                let reply = "Entendido, Matheus! Processando comando.";
-                const lower = txt.toLowerCase();
+                let response = "";
+                
+                // Tenta resolver como cálculo matemático primeiro
+                try {
+                    if (/^[0-9+\-*/().\s]+$/.test(txt)) {
+                        let res = eval(txt);
+                        response = `O resultado da conta é: ${res}`;
+                        setEmotion('calculo', null);
+                    }
+                } catch(e) {}
 
-                if(lower.includes("olá") || lower.includes("oi")) reply = "Oi Matheus! Tudo bem?";
-                else if(lower.includes("senta") || lower.includes("sentada")) {
-                    reply = "Sentei! Como estou?";
-                    setPose('sentada', null);
-                } else if(lower.includes("dança") || lower.includes("dançar")) {
-                    reply = "Olha os meus movimentos!";
-                    setPose('danca', null);
+                if(!response) {
+                    const lower = txt.toLowerCase();
+                    if(lower.includes("olá") || lower.includes("oi")) response = "Oi Matheus! Como você está?";
+                    else if(lower.includes("tudo bem")) response = "Tudo ótimo por aqui! E com você?";
+                    else response = `Entendi! Você disse: "${txt}". Como posso te ajudar a mais?`;
                 }
 
-                msgBox.innerHTML += `<div class="msg vexyra"><b>VEXYRA:</b> ${reply}</div>`;
-                bubble.innerText = reply;
-                msgBox.scrollTop = msgBox.scrollHeight;
-                speak(reply);
-            }, 500);
+                chatLogs.innerHTML += `<div class="msg vexyra"><b>VEXYRA:</b> ${response}</div>`;
+                chatLogs.scrollTop = chatLogs.scrollHeight;
+                say(response);
+            }, 400);
         }
 
-        function speak(texto) {
+        function say(texto) {
+            bubble.innerText = texto;
+            
+            // Animação da boca mexendo
+            clearInterval(talkingInterval);
+            let state = false;
+            talkingInterval = setInterval(() => {
+                mouth.setAttribute('d', state ? 'M 90,118 Q 100,128 110,118' : 'M 92,120 Q 100,115 108,120');
+                state = !state;
+            }, 120);
+
+            // Voz
             if('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
                 const utter = new SpeechSynthesisUtterance(texto);
                 utter.lang = 'pt-BR';
+                utter.onend = () => {
+                    clearInterval(talkingInterval);
+                    mouth.setAttribute('d', 'M 90,118 Q 100,126 110,118');
+                };
                 window.speechSynthesis.speak(utter);
+            } else {
+                setTimeout(() => { clearInterval(talkingInterval); }, 2000);
             }
         }
     </script>
