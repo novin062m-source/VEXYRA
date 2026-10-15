@@ -900,5 +900,77 @@ animar();
 }
 </style>
 
+
+<style id="vexyra-controles-mobile-fix">
+@media (max-width: 768px) {
+  .main-wrapper[data-mobile-tab="controls"]
+  .control-column {
+    overflow-y: auto !important;
+    padding: 16px !important;
+    padding-bottom: 30px !important;
+  }
+
+  #vexyra-poses-anime,
+  #vexyra-guarda-roupa {
+    position: static !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 10px 0 !important;
+  }
+
+  #vexyra-poses-anime {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+
+  #vexyra-poses-anime button {
+    flex: 1 1 120px;
+    min-height: 44px;
+  }
+
+  #vexyra-guarda-roupa {
+    padding: 12px !important;
+  }
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const painel = document.querySelector(".control-column");
+  const poses = document.getElementById("vexyra-poses-anime");
+  const roupas = document.getElementById("vexyra-guarda-roupa");
+
+  if (!painel || !poses || !roupas) return;
+
+  const posicoes = [
+    {elemento: poses, pai: poses.parentNode, proximo: poses.nextSibling},
+    {elemento: roupas, pai: roupas.parentNode, proximo: roupas.nextSibling}
+  ];
+
+  function ajustar() {
+    if (window.innerWidth <= 768) {
+      painel.appendChild(poses);
+      painel.appendChild(roupas);
+    } else {
+      posicoes.forEach(function (item) {
+        if (item.proximo && item.proximo.parentNode === item.pai) {
+          item.pai.insertBefore(item.elemento, item.proximo);
+        } else {
+          item.pai.appendChild(item.elemento);
+        }
+      });
+    }
+  }
+
+  ajustar();
+  window.addEventListener("resize", ajustar);
+});
+</script>
+
 </body>
 </html>
