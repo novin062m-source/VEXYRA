@@ -87,7 +87,7 @@ if(conversations.length){current=conversations[0].id;render()}else start();
 
 <section id="avatar-studio">
   <h2>✦ Avatar Studio</h2>
-  <div id="avatar-preview">👩🏻‍🚀</div>
+  <div id="avatar-preview"><img src="avatars/personagem.svg" alt="Personagem VEXYRA" style="width:180px;max-width:100%;height:auto;border-radius:18px"></div>
   <label for="avatar-gender">Escolha seu personagem</label>
   <select id="avatar-gender">
     <option value="female">Feminino</option>
@@ -103,7 +103,7 @@ if(conversations.length){current=conversations[0].id;render()}else start();
   select.value = localStorage.getItem('vexyra-avatar') || 'female';
 
   function atualizar() {
-    preview.textContent =
+    preview.dataset.genero =
       select.value === 'male' ? '👨🏻‍🚀' : '👩🏻‍🚀';
     localStorage.setItem('vexyra-avatar', select.value);
   }
