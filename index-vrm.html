@@ -614,17 +614,20 @@ if (personagem) {
             modo === 'sentada' || modo === 'acenando') {
 
             // Braços abaixados, próximos ao corpo.
-            mover('leftUpperArm', 'z', -1.25);
-            mover('rightUpperArm', 'z', 1.25);
+            // Ombros relaxados, próximos ao tronco.
+            mover('leftUpperArm', 'z', -1.48);
+            mover('rightUpperArm', 'z', 1.48);
 
-            mover('leftUpperArm', 'x', 0.06);
-            mover('rightUpperArm', 'x', -0.06);
+            // Braços ligeiramente à frente do corpo.
+            mover('leftUpperArm', 'x', -0.12);
+            mover('rightUpperArm', 'x', -0.12);
 
-            mover('leftLowerArm', 'x', 0);
-            mover('rightLowerArm', 'x', 0);
+            // Cotovelos suavemente dobrados.
+            mover('leftLowerArm', 'x', -0.18);
+            mover('rightLowerArm', 'x', -0.18);
 
-            mover('leftLowerArm', 'z', 0);
-            mover('rightLowerArm', 'z', 0);
+            mover('leftLowerArm', 'z', -0.10);
+            mover('rightLowerArm', 'z', 0.10);
         }
 
         if (modo === 'acenando') {
