@@ -250,8 +250,160 @@ html, body {
 }
 </style>
 
+
+<style id="vexyra-responsive-final">
+/* VEXYRA 0.1 — computador */
+@media (min-width: 769px) {
+  body {
+    height: 100dvh !important;
+  }
+  .main-wrapper {
+    grid-template-columns:
+      minmax(240px, 1.1fr)
+      minmax(340px, 1.5fr)
+      minmax(210px, 260px) !important;
+    height: 100dvh !important;
+    flex: 1 !important;
+  }
+  .chat-logs {
+    max-height: none !important;
+    min-height: 0 !important;
+  }
+}
+
+/* VEXYRA 0.1 — celular */
+@media (max-width: 768px) {
+  body {
+    display: block !important;
+    height: 100dvh !important;
+    overflow: hidden !important;
+  }
+  .sidebar {
+    display: none !important;
+  }
+  .main-wrapper {
+    display: block !important;
+    width: 100% !important;
+    height: calc(100dvh - 56px) !important;
+    overflow: hidden !important;
+  }
+  .char-column,
+  .chat-column,
+  .control-column {
+    display: none !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    max-width: none !important;
+    overflow: hidden !important;
+  }
+  .main-wrapper[data-mobile-tab="chat"] .chat-column {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  .main-wrapper[data-mobile-tab="avatar"] .char-column {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  .main-wrapper[data-mobile-tab="controls"] .control-column {
+    display: flex !important;
+    flex-direction: column !important;
+    overflow-y: auto !important;
+  }
+  .chat-logs {
+    flex: 1 !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    overflow-y: auto !important;
+    padding: 14px !important;
+  }
+  .msg {
+    max-width: 92% !important;
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+  }
+  .chat-input-box {
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    padding: 10px !important;
+    gap: 8px !important;
+  }
+  .chat-input-box input {
+    width: auto !important;
+    min-width: 0 !important;
+    flex: 1 1 auto !important;
+    font-size: 16px !important;
+  }
+  .chat-input-box button {
+    min-height: 42px !important;
+  }
+  .char-column {
+    padding: 12px !important;
+  }
+  #personagem3d {
+    min-height: 0 !important;
+  }
+  #vexyra-mobile-nav {
+    display: flex !important;
+  }
+  #vexyra-guarda-roupa,
+  #vexyra-poses-anime {
+    z-index: 20 !important;
+  }
+}
+#vexyra-mobile-nav {
+  display: none;
+  height: 56px;
+  background: #0b0e17;
+  border-bottom: 1px solid #29304a;
+  align-items: center;
+  justify-content: space-around;
+  gap: 5px;
+  padding: 6px;
+}
+#vexyra-mobile-nav button {
+  flex: 1;
+  border: 1px solid #29304a;
+  background: #111827;
+  color: #cbd5e1;
+  border-radius: 9px;
+  padding: 10px 3px;
+  font-size: 12px;
+}
+#vexyra-mobile-nav button.active {
+  background: #2e1065;
+  color: #e9d5ff;
+  border-color: #a855f7;
+}
+</style>
+
 </head>
 <body>
+
+<nav id="vexyra-mobile-nav" aria-label="Navegação móvel">
+  <button type="button" class="active" data-tab="chat">💬 Chat</button>
+  <button type="button" data-tab="avatar">👤 Personagem</button>
+  <button type="button" data-tab="controls">⚙️ Controles</button>
+</nav>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const area = document.querySelector(".main-wrapper");
+  const nav = document.getElementById("vexyra-mobile-nav");
+  if (!area || !nav) return;
+  area.dataset.mobileTab = "chat";
+
+  nav.querySelectorAll("button").forEach(function (botao) {
+    botao.addEventListener("click", function () {
+      area.dataset.mobileTab = botao.dataset.tab;
+      nav.querySelectorAll("button").forEach(function (b) {
+        b.classList.toggle("active", b === botao);
+      });
+      window.dispatchEvent(new Event("resize"));
+    });
+  });
+});
+</script>
+
 
     <!-- BARRA LATERAL ESQUERDA -->
     <div class="sidebar">
