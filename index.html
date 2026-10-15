@@ -86,14 +86,33 @@
       chat.appendChild(div);
     }
 
-    form.addEventListener("submit", function(event) {
-      event.preventDefault();
-      const texto = input.value.trim();
-      if (!texto) return;
-      adicionar("Você: " + texto, "user");
-      input.value = "";
-      adicionar("VEXYRA: Minha inteligência ainda está sendo conectada.");
-    });
+    form.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const texto = input.value.trim();
+  if (!texto) return;
+
+  adicionar("Você: " + texto, "user");
+  input.value = "";
+
+  try {
+    const resposta = await fetch(
+      "https://vexyra-api.novin062m.workers.dev",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ message: texto })
+      }
+    );
+
+    const dados = await resposta.json();
+    adicionar("VEXYRA: " + (dados.reply || dados.response || dados.error || JSON.stringify(dados)));
+  } catch (erro) {
+    adicionar("VEXYRA: Erro de conexão.");
+  }
+});
   </script>
 </body>
 </html>
