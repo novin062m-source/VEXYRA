@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VEXYRA 2.0 | Sua inteligência, seu universo</title>
+<style>
+:root{color-scheme:dark;--bg:#080911;--panel:#111322;--line:#282a42;--accent:#ab87ff;--txt:#f4f1ff;--muted:#aaa6c5}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 65% -20%,#30204c 0,transparent 42%),var(--bg);color:var(--txt);font-family:system-ui,-apple-system,Arial,sans-serif}.app{display:flex;min-height:100dvh}.side{width:260px;background:#0c0d19;border-right:1px solid var(--line);padding:22px 15px;display:flex;flex-direction:column;gap:18px}.logo{font-weight:900;letter-spacing:4px;color:var(--accent);font-size:22px}.tag{color:var(--muted);font-size:12px;margin-top:4px}.new,.tool,.history button{border:1px solid var(--line);background:#191a2c;color:var(--txt);border-radius:13px;padding:13px;text-align:left;cursor:pointer}.new{border-color:#7357b4;background:#2b2147;text-align:center;font-weight:700}.history{display:flex;flex-direction:column;gap:7px;overflow-y:auto}.history button{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.history button.active{border-color:var(--accent)}.sidefoot{margin-top:auto;color:var(--muted);font-size:12px}.main{flex:1;min-width:0;display:flex;flex-direction:column;max-height:100dvh}.top{display:flex;align-items:center;gap:12px;padding:16px 24px;border-bottom:1px solid var(--line);background:#0b0c17a8;backdrop-filter:blur(10px)}.orb{width:30px;height:30px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#e5d5ff,#9462f5 45%,#3b246e);box-shadow:0 0 22px #9b68ff80}.top strong{letter-spacing:2px}.status{margin-left:auto;font-size:12px;color:#b2edca}.workspace{flex:1;overflow:auto;display:flex;flex-direction:column;max-width:950px;width:100%;margin:0 auto;padding:20px}.hero{text-align:center;margin:24px auto 14px}.hero h1{font-size:clamp(26px,5vw,43px);margin:10px 0;background:linear-gradient(100deg,#fff,#b69cff);background-clip:text;color:transparent}.hero p{color:var(--muted);margin:0}.tools{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:24px 0}.tool{min-height:85px}.tool b{display:block;margin-bottom:6px}.tool small{color:var(--muted)}#chat{display:flex;flex-direction:column;gap:14px;flex:1;padding:8px 0 20px}.msg{padding:14px 16px;border:1px solid var(--line);border-radius:16px;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.5;max-width:92%}.msg.user{align-self:flex-end;background:#392755;border-color:#5a3c87}.msg.bot{align-self:flex-start;background:#161727}.msg .who{display:block;color:#b99aff;font-weight:700;font-size:12px;margin-bottom:6px}.compose{padding:12px 24px 20px;background:linear-gradient(transparent,#080911 15%)}form{max-width:950px;margin:auto;display:flex;gap:10px;background:#171829;border:1px solid #4c3c71;border-radius:17px;padding:8px;box-shadow:0 0 28px #6c45af1a}textarea{flex:1;min-width:0;background:transparent;border:0;outline:0;color:white;padding:12px;font:inherit;resize:none;min-height:48px;max-height:120px}button.send{border:0;border-radius:12px;background:#ad8bff;color:#151024;font-weight:800;padding:0 20px;cursor:pointer}button:disabled{opacity:.55;cursor:wait}.hint{text-align:center;color:#77738e;font-size:11px;margin-top:9px}.mobilemenu{display:none;background:transparent;border:1px solid var(--line);border-radius:8px;color:white;padding:8px}@media(max-width:700px){.side{position:fixed;z-index:4;inset:0 auto 0 0;transform:translateX(-100%);transition:transform .2s;box-shadow:0 0 50px #000}.side.open{transform:none}.mobilemenu{display:block}.top{padding:12px 14px}.workspace{padding:13px}.hero{margin:14px auto}.tools{grid-template-columns:1fr 1fr;gap:8px;margin:18px 0}.tool{min-height:70px;padding:10px}.tool small{font-size:11px}.compose{padding:10px}.msg{max-width:97%}}@media(max-width:360px){.tools{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="side" id="side"><div><div class="logo">VEXYRA</div><div class="tag">Muito além de uma IA.</div></div><button class="new" id="new">＋ Nova conversa</button><div class="history" id="history"></div><div class="sidefoot">VEXYRA 2.0 • Conversas salvas neste navegador</div></aside>
+<section class="main"><header class="top"><button class="mobilemenu" id="menu" aria-label="Abrir menu">☰</button><div class="orb"></div><strong>VEXYRA</strong><span class="status">● IA conectada</span></header>
+<div class="workspace" id="workspace"><div class="hero" id="hero"><h1>Sua inteligência, seu universo.</h1><p>Converse, aprenda, crie e descubra.</p></div>
+<div class="tools" id="tools"><button class="tool" data-prompt="Resolva este cálculo passo a passo: "><b>∑ Matemática</b><small>Cálculos e explicações</small></button><button class="tool" data-prompt="Quero converter uma moeda. Me pergunte qual moeda e valor. Avise que a cotação pode não ser em tempo real."><b>◈ Cotações</b><small>Conversões (sem dados ao vivo)</small></button><button class="tool" data-prompt="Ajude-me a organizar uma planilha em formato de tabela. Pergunte quais dados e colunas desejo."><b>▦ Planilhas</b><small>Organize tabelas no chat</small></button></div>
+<div id="chat" aria-live="polite"></div></div>
+<div class="compose"><form id="form"><textarea id="mensagem" placeholder="Pergunte qualquer coisa à VEXYRA..." rows="1" required></textarea><button class="send" id="send" type="submit">Enviar ➜</button></form><div class="hint">Ferramentas avançadas e cotações em tempo real serão adicionadas depois.</div></div></section></div>
+<script>
+const API='https://vexyra-public.novin062m.workers.dev';
+const form=document.getElementById('form'),chat=document.getElementById('chat'),input=document.getElementById('mensagem'),send=document.getElementById('send'),workspace=document.getElementById('workspace'),side=document.getElementById('side');
+const KEY='vexyra-v2-conversations';let conversations=[],current=null;
+try{const saved=JSON.parse(localStorage.getItem(KEY)||'[]');if(Array.isArray(saved))conversations=saved.filter(c=>c&&Array.isArray(c.messages));}catch(e){}
+function persist(){try{localStorage.setItem(KEY,JSON.stringify(conversations.slice(0,40)));}catch(e){}}
+function start(){const id=String(Date.now())+'-'+Math.random().toString(36).slice(2,6);conversations.unshift({id,title:'Nova conversa',messages:[]});current=id;persist();render();side.classList.remove('open');}
+function getCurrent(){return conversations.find(c=>c.id===current);}
+function add(text,role){const c=getCurrent();if(!c)return;c.messages.push({text,role});if(role==='user'&&c.title==='Nova conversa')c.title=text.slice(0,35);persist();render();}
+function render(){const c=getCurrent();chat.innerHTML='';(c?.messages||[]).forEach(m=>{const el=document.createElement('div');el.className='msg '+(m.role==='user'?'user':'bot');const who=document.createElement('span');who.className='who';who.textContent=m.role==='user'?'VOCÊ':'VEXYRA';const body=document.createElement('span');body.textContent=m.text;el.append(who,body);chat.appendChild(el)});document.getElementById('hero').style.display=c?.messages.length?'none':'';document.getElementById('tools').style.display=c?.messages.length?'none':'';const history=document.getElementById('history');history.innerHTML='';conversations.forEach(item=>{const b=document.createElement('button');b.textContent='◉ '+item.title;b.className=item.id===current?'active':'';b.onclick=()=>{current=item.id;render();side.classList.remove('open')};history.appendChild(b)});workspace.scrollTop=workspace.scrollHeight;}
+document.getElementById('new').onclick=start;document.getElementById('menu').onclick=()=>side.classList.toggle('open');document.querySelectorAll('[data-prompt]').forEach(b=>b.onclick=()=>{input.value=b.dataset.prompt;input.focus()});
+form.addEventListener('submit',async e=>{e.preventDefault();const text=input.value.trim();if(!text||send.disabled)return;const id=current;add(text,'user');input.value='';send.disabled=true;send.textContent='...';try{const response=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mensagem:text})});if(!response.ok)throw new Error('HTTP '+response.status);const data=await response.json();if(current!==id){const c=conversations.find(x=>x.id===id);if(c){c.messages.push({text:String(data.resposta||data.erro||'Não consegui responder.').replace(/\*/g,''),role:'bot'});persist()}}else add(String(data.resposta||data.erro||'Não consegui responder.').replace(/\*/g,''),'bot')}catch(err){const c=conversations.find(x=>x.id===id);if(c){c.messages.push({text:'Erro ao conectar: '+err.message,role:'bot'});persist();if(current===id)render()}}finally{send.disabled=false;send.textContent='Enviar ➜';input.focus()}});
+input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();form.requestSubmit()}});
+if(conversations.length){current=conversations[0].id;render()}else start();
+</script>
+
+<style>
+.vex-avatar {
+  width: 150px;
+  height: 150px;
+  margin: 24px auto;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(circle, #a855f7, #301050 65%, #080510);
+  box-shadow: 0 0 35px #9333ea88;
+  animation: vexPulse 3s ease-in-out infinite;
+}
+.vex-avatar::before {
+  content: '✦';
+  font-size: 75px;
+  color: white;
+  text-shadow: 0 0 25px #fff;
+}
+@keyframes vexPulse {
+  50% {
+    transform: scale(1.06);
+    box-shadow: 0 0 65px #a855f7;
+  }
+}
+</style>
+<div class="vex-avatar" title="Avatar VEXYRA"></div>
+
+</body>
+</html>
