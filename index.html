@@ -2,138 +2,189 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>VEXYRA 0.1</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
-        body { background-color: #0b0f19; color: #ffffff; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-height: 100vh; padding: 20px; }
-        h1 { color: #a855f7; margin-bottom: 5px; font-size: 24px; }
-        p { color: #9ca3af; font-size: 14px; margin-bottom: 15px; }
-        canvas { background: #111827; border-radius: 12px; box-shadow: 0 0 20px rgba(168, 85, 247, 0.3); margin-bottom: 15px; }
-        #chat-container { width: 100%; max-width: 400px; background: #1f2937; padding: 15px; border-radius: 10px; display: flex; flex-direction: column; gap: 10px; }
-        input { padding: 12px; border-radius: 5px; border: none; outline: none; background: #374151; color: white; font-size: 14px; }
-        button { padding: 12px; border-radius: 5px; border: none; background: #a855f7; color: white; font-weight: bold; cursor: pointer; font-size: 14px; }
-        button:hover { background: #9333ea; }
-        #mensagens { height: 150px; overflow-y: auto; font-size: 14px; background: #111827; padding: 10px; border-radius: 5px; display: flex; flex-direction: column; gap: 6px; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        body { background-color: #05070b; color: #f8fafc; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+
+        /* Topo */
+        .top-bar { background: #0b0f17; border-bottom: 1px solid #1e293b; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+        .logo-text { font-size: 16px; font-weight: bold; color: #a855f7; display: flex; align-items: center; gap: 6px; }
+        .user-status { font-size: 11px; background: rgba(34,197,94,0.15); color: #22c55e; border: 1px solid rgba(34,197,94,0.3); padding: 2px 8px; border-radius: 10px; }
+
+        /* Layout Principal adaptado para mobile */
+        .workspace { flex: 1; display: flex; flex-direction: column; overflow-y: auto; }
+
+        /* Seção da Personagem Viva (Estilo VR / Anime HQ) */
+        .character-viewport { position: relative; width: 100%; height: 340px; background: #0c101d; overflow: hidden; flex-shrink: 0; }
+        .avatar-img { width: 100%; height: 100%; object-fit: cover; object-position: top center; transition: 0.3s ease; }
+        .viewport-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(5,7,11,0.95) 0%, rgba(5,7,11,0.3) 70%, transparent 100%); padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+        .speech-card { background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(168, 85, 247, 0.4); padding: 10px 14px; border-radius: 12px; font-size: 12px; color: #e2e8f0; backdrop-filter: blur(6px); }
+
+        /* Abas de Navegação Superiores */
+        .tabs-nav { background: #0b0f17; border-bottom: 1px solid #1e293b; display: flex; overflow-x: auto; padding: 0 10px; flex-shrink: 0; }
+        .tab-item { padding: 10px 14px; font-size: 12px; color: #64748b; white-space: nowrap; cursor: pointer; border-bottom: 2px solid transparent; }
+        .tab-item.active { color: #c084fc; border-bottom-color: #a855f7; font-weight: bold; }
+
+        /* Painel de Controles (Roupas, Poses e Expressões) */
+        .customizer-panel { background: #0b0f17; border-bottom: 1px solid #1e293b; padding: 12px; display: flex; flex-direction: column; gap: 10px; flex-shrink: 0; }
+        .panel-title { font-size: 10px; color: #64748b; text-transform: uppercase; font-weight: bold; letter-spacing: 0.5px; }
+        .options-row { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px; }
+        .opt-btn { background: #111827; border: 1px solid #1f2937; color: #cbd5e1; padding: 6px 12px; border-radius: 8px; font-size: 11px; white-space: nowrap; cursor: pointer; }
+        .opt-btn.active { background: #581c87; border-color: #a855f7; color: #e9d5ff; font-weight: bold; }
+
+        /* Seção do Chat */
+        .chat-section { flex: 1; min-height: 220px; display: flex; flex-direction: column; background: #05070b; }
+        .chat-history { flex: 1; padding: 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+        .chat-bubble { padding: 10px 14px; border-radius: 10px; font-size: 13px; max-width: 85%; line-height: 1.4; }
+        .chat-bubble.vexyra { background: #111827; border: 1px solid #1f2937; border-left: 3px solid #a855f7; align-self: flex-start; color: #f1f5f9; }
+        .chat-bubble.user { background: #1e1b4b; border: 1px solid #312e81; align-self: flex-end; color: #e2e8f0; }
+
+        /* Input de Envio */
+        .chat-input-bar { background: #0b0f17; border-top: 1px solid #1e293b; padding: 10px; display: flex; gap: 8px; flex-shrink: 0; }
+        .chat-input-bar input { flex: 1; background: #111827; border: 1px solid #374151; padding: 10px 14px; border-radius: 8px; color: white; outline: none; font-size: 13px; }
+        .chat-input-bar button { background: #7c3aed; color: white; border: none; padding: 0 16px; border-radius: 8px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <h1>VEXYRA 0.1</h1>
-    <p>Personagem Viva & Conectada</p>
+    <div class="top-bar">
+        <div class="logo-text">VEXYRA 0.1</div>
+        <div class="user-status">● Online</div>
+    </div>
 
-    <canvas id="vexyraCanvas" width="160" height="160"></canvas>
+    <div class="workspace">
+        <!-- Visualizador da Personagem Viva (Estilo VR / Anime HQ) -->
+        <div class="character-viewport">
+            <img id="avatarImage" class="avatar-img" src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=1000&auto=format&fit=crop" alt="Vexyra 0.1">
+            <div class="viewport-overlay">
+                <div class="speech-card" id="speechCard">Pronto! Aqui está a minha pose atual. O que vamos fazer agora, Matheus? ✨</div>
+            </div>
+        </div>
 
-    <div id="chat-container">
-        <div id="mensagens"><div><b>VEXYRA 0.1:</b> Olá Matheus! Estou pronta para conversar e calcular.</div></div>
-        <input type="text" id="userInput" placeholder="Digite uma mensagem ou cálculo..." onkeypress="if(event.key==='Enter') enviarMensagem()">
-        <button onclick="enviarMensagem()">Enviar</button>
+        <!-- Abas de Modos de IA -->
+        <div class="tabs-nav">
+            <div class="tab-item active">Chat</div>
+            <div class="tab-item">Cálculos</div>
+            <div class="tab-item">Estudar</div>
+            <div class="tab-item">Pesquisar</div>
+            <div class="tab-item">Músicas</div>
+        </div>
+
+        <!-- Painel de Customização e Comandos (Idêntico ao Studio da sua print) -->
+        <div class="customizer-panel">
+            <div class="panel-title">Animações e Poses</div>
+            <div class="options-row">
+                <button class="opt-btn active" onclick="mudarPose('sentada', this)">🪑 Sentada</button>
+                <button class="opt-btn" onclick="mudarPose('pe', this)">🚶 Em pé</button>
+                <button class="opt-btn" onclick="mudarPose('deitada', this)">🛋️ Deitada</button>
+                <button class="opt-btn" onclick="mudarPose('dancando', this)">💃 Dançando</button>
+            </div>
+
+            <div class="panel-title">Expressões Faciais</div>
+            <div class="options-row">
+                <button class="opt-btn" onclick="mudarExpressao('feliz', this)">😊 Feliz</button>
+                <button class="opt-btn" onclick="mudarExpressao('piscando', this)">😉 Piscando</button>
+                <button class="opt-btn" onclick="mudarExpressao('surpresa', this)">😲 Surpresa</button>
+            </div>
+        </div>
+
+        <!-- Conversa e Chat -->
+        <div class="chat-section">
+            <div class="chat-history" id="chatHistory">
+                <div class="chat-bubble vexyra"><b>VEXYRA 0.1:</b> Olá Matheus! Estou pronta com o painel completo. Pode digitar comandos, conversar ou fazer cálculos matemáticos.</div>
+            </div>
+
+            <div class="chat-input-bar">
+                <input type="text" id="userInput" placeholder="Digite sua mensagem ou comando..." onkeypress="if(event.key==='Enter') enviarMensagem()">
+                <button onclick="enviarMensagem()">Enviar</button>
+            </div>
+        </div>
     </div>
 
     <script>
-        const canvas = document.getElementById('vexyraCanvas');
-        const ctx = canvas.getContext('2d');
+        const avatarImage = document.getElementById('avatarImage');
+        const speechCard = document.getElementById('speechCard');
+        const chatHistory = document.getElementById('chatHistory');
 
-        let estaFalando = false;
-        let bocaAberta = false;
-        let olhosFechados = false;
+        const posesMap = {
+            'sentada': 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=1000&auto=format&fit=crop',
+            'pe': 'https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=1000&auto=format&fit=crop',
+            'deitada': 'https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=1000&auto=format&fit=crop',
+            'dancando': 'https://images.unsplash.com/photo-1563089145-599997674d42?q=80&w=1000&auto=format&fit=crop'
+        };
 
-        setInterval(() => {
-            olhosFechados = true;
-            setTimeout(() => { olhosFechados = false; }, 150);
-        }, 3000);
-
-        setInterval(() => {
-            if (estaFalando) {
-                bocaAberta = !bocaAberta;
-            } else {
-                bocaAberta = false;
+        function mudarPose(pose, btn) {
+            setActiveButton(btn);
+            if(posesMap[pose]) {
+                avatarImage.src = posesMap[pose];
+                let txt = `Pose alterada para: ${pose}. Como estou?`;
+                atualizarFala(txt);
             }
-        }, 150);
-
-        function desenhar() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // Cabeça
-            ctx.fillStyle = "#ffe0bd";
-            ctx.beginPath();
-            ctx.arc(80, 80, 50, 0, Math.PI * 2);
-            ctx.fill();
-
-            // Orelhas de Gato
-            ctx.fillStyle = "#d8b4fe";
-            ctx.beginPath(); ctx.moveTo(40, 50); ctx.lineTo(20, 15); ctx.lineTo(60, 35); ctx.fill();
-            ctx.beginPath(); ctx.moveTo(120, 50); ctx.lineTo(140, 15); ctx.lineTo(100, 35); ctx.fill();
-
-            // Olhos
-            ctx.fillStyle = "#a855f7";
-            if (olhosFechados) {
-                ctx.fillRect(60, 75, 10, 2);
-                ctx.fillRect(90, 75, 10, 2);
-            } else {
-                ctx.beginPath();
-                ctx.arc(65, 75, 5, 0, Math.PI * 2);
-                ctx.arc(95, 75, 5, 0, Math.PI * 2);
-                ctx.fill();
-            }
-
-            // Boca
-            ctx.fillStyle = "#e11d48";
-            ctx.beginPath();
-            if (bocaAberta) {
-                ctx.arc(80, 100, 6, 0, Math.PI);
-            } else {
-                ctx.arc(80, 100, 3, 0, Math.PI);
-            }
-            ctx.fill();
-
-            requestAnimationFrame(desenhar);
         }
-        desenhar();
+
+        function mudarExpressao(expr, btn) {
+            setActiveButton(btn);
+            let txt = `Expressão facial alterada para: ${expr}! ✨`;
+            atualizarFala(txt);
+        }
+
+        function setActiveButton(btn) {
+            if(!btn) return;
+            const container = btn.parentElement;
+            container.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
 
         function enviarMensagem() {
             const input = document.getElementById('userInput');
             const txt = input.value.trim();
             if(!txt) return;
 
-            const box = document.getElementById('mensagens');
-            box.innerHTML += `<div><b>Você:</b> ${txt}</div>`;
+            chatHistory.innerHTML += `<div class="chat-bubble user"><b>Você:</b> ${txt}</div>`;
             input.value = "";
-            box.scrollTop = box.scrollHeight;
+            chatHistory.scrollTop = chatHistory.scrollHeight;
 
-            let resposta = "";
+            setTimeout(() => {
+                let resposta = "";
 
-            try {
-                if (/^[0-9+\-*/().\s]+$/.test(txt)) {
-                    let res = eval(txt);
-                    resposta = `O resultado do cálculo é ${res}.`;
+                // Sistema de cálculo matemático integrado
+                try {
+                    if (/^[0-9+\-*/().\s]+$/.test(txt)) {
+                        let resultado = eval(txt);
+                        resposta = `O resultado do cálculo é: ${resultado}`;
+                    }
+                } catch(e) {}
+
+                if(!resposta) {
+                    const lower = txt.toLowerCase();
+                    if(lower.includes("olá") || lower.includes("oi")) {
+                        resposta = "Oi Matheus! Tudo ótimo por aqui.";
+                    } else if(lower.includes("senta") || lower.includes("sentada")) {
+                        resposta = "Pronto! Já ajustei minha pose para sentada.";
+                        mudarPose('sentada', null);
+                    } else if(lower.includes("dança") || lower.includes("dançar")) {
+                        resposta = "Modo de dança ativado!";
+                        mudarPose('dancando', null);
+                    } else {
+                        resposta = `Comando recebido: "${txt}". Processando na Vexyra 0.1!`;
+                    }
                 }
-            } catch(e) {}
 
-            if (!resposta) {
-                const lower = txt.toLowerCase();
-                if(lower.includes("olá") || lower.includes("oi")) {
-                    resposta = "Oi Matheus! Tudo bem?";
-                } else {
-                    resposta = `Entendido! Processando: "${txt}".`;
-                }
-            }
-
-            box.innerHTML += `<div><b>VEXYRA:</b> ${resposta}</div>`;
-            box.scrollTop = box.scrollHeight;
-            falar(resposta);
+                chatHistory.innerHTML += `<div class="chat-bubble vexyra"><b>VEXYRA:</b> ${resposta}</div>`;
+                chatHistory.scrollTop = chatHistory.scrollHeight;
+                atualizarFala(resposta);
+            }, 500);
         }
 
-        function falar(texto) {
-            estaFalando = true;
-            if ('speechSynthesis' in window) {
+        function atualizarFala(texto) {
+            speechCard.innerText = texto;
+            if('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
-                const utterance = new SpeechSynthesisUtterance(texto);
-                utterance.lang = 'pt-BR';
-                utterance.onend = () => { estaFalando = false; };
-                window.speechSynthesis.speak(utterance);
-            } else {
-                setTimeout(() => { estaFalando = false; }, 2000);
+                const utter = new SpeechSynthesisUtterance(texto);
+                utter.lang = 'pt-BR';
+                window.speechSynthesis.speak(utter);
             }
         }
     </script>
