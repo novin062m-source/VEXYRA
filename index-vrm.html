@@ -377,6 +377,33 @@ html, body {
 }
 </style>
 
+
+<style id="vexyra-fix-sobreposicao">
+@media (max-width: 768px) {
+  body:not(:has(.main-wrapper[data-mobile-tab="controls"]))
+  #vexyra-poses-anime,
+  body:not(:has(.main-wrapper[data-mobile-tab="controls"]))
+  #vexyra-guarda-roupa {
+    display: none !important;
+  }
+
+  #vexyra-poses-anime,
+  #vexyra-guarda-roupa {
+    position: static !important;
+    inset: auto !important;
+    transform: none !important;
+    width: 100% !important;
+    max-width: none !important;
+    margin: 10px 0 !important;
+  }
+
+  .main-wrapper[data-mobile-tab="controls"]
+  .control-column {
+    overflow-y: auto !important;
+  }
+}
+</style>
+
 </head>
 <body>
 
