@@ -5,186 +5,246 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>VEXYRA 0.1</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-        body { background-color: #05070b; color: #f8fafc; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+        body { background-color: #06080e; color: #f1f5f9; height: 100vh; overflow: hidden; display: flex; font-size: 12px; }
 
-        /* Topo */
-        .top-bar { background: #0b0f17; border-bottom: 1px solid #1e293b; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
-        .logo-text { font-size: 16px; font-weight: bold; color: #a855f7; display: flex; align-items: center; gap: 6px; }
-        .user-status { font-size: 11px; background: rgba(34,197,94,0.15); color: #22c55e; border: 1px solid rgba(34,197,94,0.3); padding: 2px 8px; border-radius: 10px; }
+        /* --- SIDEBAR ESQUERDA --- */
+        .sidebar { width: 180px; background: #0b0e17; border-right: 1px solid #1e2638; display: flex; flex-direction: column; padding: 12px 8px; gap: 4px; flex-shrink: 0; }
+        .logo { font-size: 16px; font-weight: bold; color: #a855f7; padding: 6px 8px; margin-bottom: 8px; }
+        .logo span { font-size: 10px; color: #64748b; display: block; font-weight: normal; }
+        .menu-title { font-size: 9px; color: #475569; text-transform: uppercase; font-weight: bold; padding: 6px 8px 2px 8px; }
+        .nav-btn { padding: 7px 10px; border-radius: 6px; color: #94a3b8; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.2s; }
+        .nav-btn:hover, .nav-btn.active { background: #1e1b4b; color: #c084fc; font-weight: 600; }
 
-        /* Layout Principal adaptado para mobile */
-        .workspace { flex: 1; display: flex; flex-direction: column; overflow-y: auto; }
+        /* --- CONTAINER PRINCIPAL (LAYOUT 3 COLUNAS / RESPONSIVO) --- */
+        .main-wrapper { flex: 1; display: flex; overflow: hidden; }
 
-        /* Seção da Personagem Viva (Estilo VR / Anime HQ) */
-        .character-viewport { position: relative; width: 100%; height: 340px; background: #0c101d; overflow: hidden; flex-shrink: 0; }
-        .avatar-img { width: 100%; height: 100%; object-fit: cover; object-position: top center; transition: 0.3s ease; }
-        .viewport-overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(5,7,11,0.95) 0%, rgba(5,7,11,0.3) 70%, transparent 100%); padding: 12px; display: flex; flex-direction: column; gap: 8px; }
-        .speech-card { background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(168, 85, 247, 0.4); padding: 10px 14px; border-radius: 12px; font-size: 12px; color: #e2e8f0; backdrop-filter: blur(6px); }
+        /* COLUNA 1: PERSONAGEM / AVATAR VIVO */
+        .char-column { flex: 1.2; background: radial-gradient(circle at center, #131728 0%, #06080e 90%); border-right: 1px solid #1e2638; display: flex; flex-direction: column; position: relative; justify-content: space-between; padding: 12px; }
+        .char-stage { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
+        .speech-bubble { position: absolute; top: 15px; background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(168, 85, 247, 0.4); padding: 8px 12px; border-radius: 10px; color: #e2e8f0; font-size: 11px; max-width: 85%; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.5); backdrop-filter: blur(4px); }
+        .music-player { background: rgba(11, 14, 23, 0.85); border: 1px solid #1e2638; padding: 8px 12px; border-radius: 8px; display: flex; align-items: center; gap: 10px; backdrop-filter: blur(4px); }
 
-        /* Abas de Navegação Superiores */
-        .tabs-nav { background: #0b0f17; border-bottom: 1px solid #1e293b; display: flex; overflow-x: auto; padding: 0 10px; flex-shrink: 0; }
-        .tab-item { padding: 10px 14px; font-size: 12px; color: #64748b; white-space: nowrap; cursor: pointer; border-bottom: 2px solid transparent; }
-        .tab-item.active { color: #c084fc; border-bottom-color: #a855f7; font-weight: bold; }
+        /* COLUNA 2: CHAT E MÓDULOS */
+        .chat-column { flex: 1; display: flex; flex-direction: column; background: #080b12; border-right: 1px solid #1e2638; }
+        .top-tabs { display: flex; border-bottom: 1px solid #1e2638; background: #0b0e17; padding: 0 8px; gap: 4px; overflow-x: auto; }
+        .tab-btn { padding: 10px 12px; color: #64748b; cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; font-size: 11px; }
+        .tab-btn.active { color: #c084fc; border-bottom-color: #a855f7; font-weight: bold; }
+        .chat-logs { flex: 1; padding: 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+        .msg { padding: 8px 12px; border-radius: 8px; font-size: 12px; max-width: 85%; line-height: 1.4; word-break: break-word; }
+        .msg.vexyra { background: #0f172a; border: 1px solid #1e293b; border-left: 3px solid #a855f7; align-self: flex-start; }
+        .msg.user { background: #2e1065; border: 1px solid #581c87; align-self: flex-end; color: #f3e8ff; }
+        .chat-input-box { padding: 10px; background: #0b0e17; border-top: 1px solid #1e2638; display: flex; gap: 6px; }
+        .chat-input-box input { flex: 1; background: #111827; border: 1px solid #1f2937; padding: 8px 12px; border-radius: 6px; color: white; outline: none; font-size: 12px; }
+        .chat-input-box button { background: #7c3aed; color: white; border: none; padding: 0 14px; border-radius: 6px; font-weight: bold; cursor: pointer; }
 
-        /* Painel de Controles (Roupas, Poses e Expressões) */
-        .customizer-panel { background: #0b0f17; border-bottom: 1px solid #1e293b; padding: 12px; display: flex; flex-direction: column; gap: 10px; flex-shrink: 0; }
-        .panel-title { font-size: 10px; color: #64748b; text-transform: uppercase; font-weight: bold; letter-spacing: 0.5px; }
-        .options-row { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px; }
-        .opt-btn { background: #111827; border: 1px solid #1f2937; color: #cbd5e1; padding: 6px 12px; border-radius: 8px; font-size: 11px; white-space: nowrap; cursor: pointer; }
-        .opt-btn.active { background: #581c87; border-color: #a855f7; color: #e9d5ff; font-weight: bold; }
+        /* COLUNA 3: PAINEL DE CONTROLES (DIREITA) */
+        .control-column { width: 220px; background: #0b0e17; padding: 12px; display: flex; flex-direction: column; gap: 12px; overflow-y: auto; flex-shrink: 0; }
+        .section-header { font-size: 10px; color: #64748b; text-transform: uppercase; font-weight: bold; letter-spacing: 0.5px; }
+        .grid-buttons { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+        .btn-ctrl { background: #111827; border: 1px solid #1f2937; color: #94a3b8; padding: 8px 6px; border-radius: 6px; font-size: 10px; cursor: pointer; text-align: center; }
+        .btn-ctrl:hover, .btn-ctrl.active { background: #2e1065; border-color: #a855f7; color: #c084fc; font-weight: bold; }
+        .cmd-pills { display: flex; flex-wrap: wrap; gap: 4px; }
+        .pill { background: #111827; border: 1px solid #1f2937; padding: 4px 8px; border-radius: 4px; font-size: 10px; color: #cbd5e1; cursor: pointer; }
+        .pill:hover { border-color: #7c3aed; background: #1e1b4b; }
 
-        /* Seção do Chat */
-        .chat-section { flex: 1; min-height: 220px; display: flex; flex-direction: column; background: #05070b; }
-        .chat-history { flex: 1; padding: 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
-        .chat-bubble { padding: 10px 14px; border-radius: 10px; font-size: 13px; max-width: 85%; line-height: 1.4; }
-        .chat-bubble.vexyra { background: #111827; border: 1px solid #1f2937; border-left: 3px solid #a855f7; align-self: flex-start; color: #f1f5f9; }
-        .chat-bubble.user { background: #1e1b4b; border: 1px solid #312e81; align-self: flex-end; color: #e2e8f0; }
-
-        /* Input de Envio */
-        .chat-input-bar { background: #0b0f17; border-top: 1px solid #1e293b; padding: 10px; display: flex; gap: 8px; flex-shrink: 0; }
-        .chat-input-bar input { flex: 1; background: #111827; border: 1px solid #374151; padding: 10px 14px; border-radius: 8px; color: white; outline: none; font-size: 13px; }
-        .chat-input-bar button { background: #7c3aed; color: white; border: none; padding: 0 16px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        /* AJUSTE PARA ECRÃS PEQUENOS / MOVILE */
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            .sidebar { width: 100%; height: auto; border-right: none; border-bottom: 1px solid #1e2638; flex-direction: row; overflow-x: auto; }
+            .main-wrapper { flex-direction: column; overflow-y: auto; }
+            .char-column { height: 260px; flex: none; border-right: none; border-bottom: 1px solid #1e2638; }
+            .chat-column { height: 300px; flex: none; border-right: none; border-bottom: 1px solid #1e2638; }
+            .control-column { width: 100%; flex: none; }
+        }
     </style>
 </head>
 <body>
 
-    <div class="top-bar">
-        <div class="logo-text">VEXYRA 0.1</div>
-        <div class="user-status">● Online</div>
+    <!-- BARRA LATERAL ESQUERDA -->
+    <div class="sidebar">
+        <div class="logo">VEXYRA 0.1<span>Sua IA. Seu mundo.</span></div>
+        <div class="menu-title">Navegação</div>
+        <div class="nav-btn active">💬 Chat</div>
+        <div class="nav-btn">⚡ Cálculos</div>
+        <div class="nav-btn">📚 Estudar</div>
+        <div class="nav-btn">🔍 Pesquisar</div>
+        <div class="nav-btn">🎵 Músicas</div>
+        <div class="menu-title">Modos IA</div>
+        <div class="nav-btn">🌟 Principal</div>
+        <div class="nav-btn">🧠 Raciocínio</div>
     </div>
 
-    <div class="workspace">
-        <!-- Visualizador da Personagem Viva (Estilo VR / Anime HQ) -->
-        <div class="character-viewport">
-            <img id="avatarImage" class="avatar-img" src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=1000&auto=format&fit=crop" alt="Vexyra 0.1">
-            <div class="viewport-overlay">
-                <div class="speech-card" id="speechCard">Pronto! Aqui está a minha pose atual. O que vamos fazer agora, Matheus? ✨</div>
+    <div class="main-wrapper">
+        <!-- COLUNA CENTRAL: AVATAR VIVO -->
+        <div class="char-column">
+            <div class="speech-bubble" id="speechCard">VEXYRA 0.1 pronta e conectada! ✨</div>
+            <div class="char-stage">
+                <!-- Avatar Vetorial Nativo que Pisca e Mexe a Boca -->
+                <svg id="vAvatarSvg" width="160" height="160" viewBox="0 0 200 200">
+                    <path d="M 40,90 Q 20,160 50,180 Q 100,190 150,180 Q 180,160 160,90 Z" fill="#7e22ce" />
+                    <polygon points="40,60 20,10 70,40" fill="#a855f7" />
+                    <polygon points="160,60 180,10 130,40" fill="#a855f7" />
+                    <polygon points="45,55 30,20 65,40" fill="#f472b6" />
+                    <polygon points="155,55 170,20 135,40" fill="#f472b6" />
+                    <ellipse cx="100" cy="100" rx="55" ry="50" fill="#ffe0bd" />
+                    <path d="M 45,80 Q 70,40 100,75 Q 130,40 155,80 Q 100,50 45,80 Z" fill="#9333ea" />
+                    <g id="eyes">
+                        <ellipse cx="78" cy="95" rx="9" ry="12" fill="#3b82f6" />
+                        <ellipse cx="122" cy="95" rx="9" ry="12" fill="#3b82f6" />
+                        <circle cx="80" cy="92" r="3" fill="#ffffff" />
+                        <circle cx="124" cy="92" r="3" fill="#ffffff" />
+                    </g>
+                    <path id="mouth" d="M 90,118 Q 100,126 110,118" stroke="#e11d48" stroke-width="3" fill="none" stroke-linecap="round" />
+                </svg>
+            </div>
+            <div class="music-player">
+                <span style="color:#a855f7;">🎵</span>
+                <div>
+                    <div style="font-weight:bold; color:#f1f5f9; font-size:11px;">I Wanna Be Yours</div>
+                    <div style="color:#64748b; font-size:9px;">Arctic Monkeys</div>
+                </div>
             </div>
         </div>
 
-        <!-- Abas de Modos de IA -->
-        <div class="tabs-nav">
-            <div class="tab-item active">Chat</div>
-            <div class="tab-item">Cálculos</div>
-            <div class="tab-item">Estudar</div>
-            <div class="tab-item">Pesquisar</div>
-            <div class="tab-item">Músicas</div>
-        </div>
-
-        <!-- Painel de Customização e Comandos (Idêntico ao Studio da sua print) -->
-        <div class="customizer-panel">
-            <div class="panel-title">Animações e Poses</div>
-            <div class="options-row">
-                <button class="opt-btn active" onclick="mudarPose('sentada', this)">🪑 Sentada</button>
-                <button class="opt-btn" onclick="mudarPose('pe', this)">🚶 Em pé</button>
-                <button class="opt-btn" onclick="mudarPose('deitada', this)">🛋️ Deitada</button>
-                <button class="opt-btn" onclick="mudarPose('dancando', this)">💃 Dançando</button>
+        <!-- COLUNA CENTRAL: CHAT E MÓDULOS -->
+        <div class="chat-column">
+            <div class="top-tabs">
+                <div class="tab-btn active">Chat</div>
+                <div class="tab-btn">Cálculos</div>
+                <div class="tab-btn">Estudar</div>
+                <div class="tab-btn">Pesquisar</div>
             </div>
-
-            <div class="panel-title">Expressões Faciais</div>
-            <div class="options-row">
-                <button class="opt-btn" onclick="mudarExpressao('feliz', this)">😊 Feliz</button>
-                <button class="opt-btn" onclick="mudarExpressao('piscando', this)">😉 Piscando</button>
-                <button class="opt-btn" onclick="mudarExpressao('surpresa', this)">😲 Surpresa</button>
+            <div class="chat-logs" id="chatLogs">
+                <div class="msg vexyra"><b>VEXYRA 0.1:</b> Olá Matheus! Sistema ativo. Como posso ajudar?</div>
+            </div>
+            <div class="chat-input-box">
+                <input type="text" id="userInput" placeholder="Digite uma mensagem ou cálculo..." onkeypress="if(event.key==='Enter') enviarMsg()">
+                <button onclick="enviarMsg()">Enviar</button>
             </div>
         </div>
 
-        <!-- Conversa e Chat -->
-        <div class="chat-section">
-            <div class="chat-history" id="chatHistory">
-                <div class="chat-bubble vexyra"><b>VEXYRA 0.1:</b> Olá Matheus! Estou pronta com o painel completo. Pode digitar comandos, conversar ou fazer cálculos matemáticos.</div>
+        <!-- COLUNA DIREITA: PAINEL DE CONTROLES E POSES -->
+        <div class="control-column">
+            <div class="section-header">Animações & Poses</div>
+            <div class="grid-buttons">
+                <div class="btn-ctrl active" onclick="setPose('sentada', this)">Sentada</div>
+                <div class="btn-ctrl" onclick="setPose('pe', this)">De pé</div>
+                <div class="btn-ctrl" onclick="setPose('deitada', this)">Deitada</div>
+                <div class="btn-ctrl" onclick="setPose('dancando', this)">Dançando</div>
             </div>
 
-            <div class="chat-input-bar">
-                <input type="text" id="userInput" placeholder="Digite sua mensagem ou comando..." onkeypress="if(event.key==='Enter') enviarMensagem()">
-                <button onclick="enviarMensagem()">Enviar</button>
+            <div class="section-header">Expressões Faciais</div>
+            <div class="grid-buttons">
+                <div class="btn-ctrl active" onclick="setExpr('normal', this)">Normal</div>
+                <div class="btn-ctrl" onclick="setExpr('feliz', this)">Feliz</div>
+                <div class="btn-ctrl" onclick="setExpr('brava', this)">Brava</div>
+                <div class="btn-ctrl" onclick="setExpr('surpresa', this)">Surpresa</div>
+            </div>
+
+            <div class="section-header">Comandos Rápidos</div>
+            <div class="cmd-pills">
+                <div class="pill" onclick="runCmd('Fica sentada')">“Fica sentada”</div>
+                <div class="pill" onclick="runCmd('Dança')">“Dança”</div>
+                <div class="pill" onclick="runCmd('Sorri')">“Sorri”</div>
             </div>
         </div>
     </div>
 
     <script>
-        const avatarImage = document.getElementById('avatarImage');
-        const speechCard = document.getElementById('speechCard');
-        const chatHistory = document.getElementById('chatHistory');
+        const eyes = document.getElementById('eyes');
+        const mouth = document.getElementById('mouth');
+        const speech = document.getElementById('speechCard');
+        const chatLogs = document.getElementById('chatLogs');
+        let talkingInterval = null;
 
-        const posesMap = {
-            'sentada': 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?q=80&w=1000&auto=format&fit=crop',
-            'pe': 'https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=1000&auto=format&fit=crop',
-            'deitada': 'https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=1000&auto=format&fit=crop',
-            'dancando': 'https://images.unsplash.com/photo-1563089145-599997674d42?q=80&w=1000&auto=format&fit=crop'
-        };
+        // Animação contínua de piscar os olhos
+        setInterval(() => {
+            eyes.style.display = 'none';
+            setTimeout(() => eyes.style.display = 'block', 150);
+        }, 3500);
 
-        function mudarPose(pose, btn) {
-            setActiveButton(btn);
-            if(posesMap[pose]) {
-                avatarImage.src = posesMap[pose];
-                let txt = `Pose alterada para: ${pose}. Como estou?`;
-                atualizarFala(txt);
-            }
+        function setPose(pose, btn) {
+            highlightBtn(btn);
+            let txt = "Pose alterada para: " + pose;
+            falar(txt);
         }
 
-        function mudarExpressao(expr, btn) {
-            setActiveButton(btn);
-            let txt = `Expressão facial alterada para: ${expr}! ✨`;
-            atualizarFala(txt);
+        function setExpr(expr, btn) {
+            highlightBtn(btn);
+            if(expr === 'feliz') mouth.setAttribute('d', 'M 90,118 Q 100,128 110,118');
+            else if(expr === 'brava') mouth.setAttribute('d', 'M 90,124 Q 100,116 110,124');
+            else if(expr === 'surpresa') mouth.setAttribute('d', 'M 93,118 A 7,7 0 1 0 107,118 A 7,7 0 1 0 93,118');
+            else mouth.setAttribute('d', 'M 90,118 Q 100,126 110,118');
+            falar("Expressão: " + expr);
         }
 
-        function setActiveButton(btn) {
+        function highlightBtn(btn) {
             if(!btn) return;
-            const container = btn.parentElement;
-            container.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('active'));
+            btn.parentElement.querySelectorAll('.btn-ctrl').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
         }
 
-        function enviarMensagem() {
+        function runCmd(cmd) {
+            document.getElementById('userInput').value = cmd;
+            enviarMsg();
+        }
+
+        function enviarMsg() {
             const input = document.getElementById('userInput');
             const txt = input.value.trim();
             if(!txt) return;
 
-            chatHistory.innerHTML += `<div class="chat-bubble user"><b>Você:</b> ${txt}</div>`;
+            chatLogs.innerHTML += `<div class="msg user"><b>Você:</b> ${txt}</div>`;
             input.value = "";
-            chatHistory.scrollTop = chatHistory.scrollHeight;
+            chatLogs.scrollTop = chatLogs.scrollHeight;
 
             setTimeout(() => {
-                let resposta = "";
+                let resp = "";
 
-                // Sistema de cálculo matemático integrado
+                // Calculadora integrada
                 try {
                     if (/^[0-9+\-*/().\s]+$/.test(txt)) {
-                        let resultado = eval(txt);
-                        resposta = `O resultado do cálculo é: ${resultado}`;
+                        resp = "Resultado do cálculo: " + eval(txt);
                     }
                 } catch(e) {}
 
-                if(!resposta) {
+                if(!resp) {
                     const lower = txt.toLowerCase();
-                    if(lower.includes("olá") || lower.includes("oi")) {
-                        resposta = "Oi Matheus! Tudo ótimo por aqui.";
-                    } else if(lower.includes("senta") || lower.includes("sentada")) {
-                        resposta = "Pronto! Já ajustei minha pose para sentada.";
-                        mudarPose('sentada', null);
-                    } else if(lower.includes("dança") || lower.includes("dançar")) {
-                        resposta = "Modo de dança ativado!";
-                        mudarPose('dancando', null);
-                    } else {
-                        resposta = `Comando recebido: "${txt}". Processando na Vexyra 0.1!`;
-                    }
+                    if(lower.includes("olá") || lower.includes("oi")) resp = "Oi Matheus! Como posso ajudar?";
+                    else if(lower.includes("sentada")) resp = "Pronto! Posição ajustada.";
+                    else if(lower.includes("dança")) resp = "Iniciando animação de dança!";
+                    else resp = `Recebido: "${txt}". Processando na VEXYRA!`;
                 }
 
-                chatHistory.innerHTML += `<div class="chat-bubble vexyra"><b>VEXYRA:</b> ${resposta}</div>`;
-                chatHistory.scrollTop = chatHistory.scrollHeight;
-                atualizarFala(resposta);
-            }, 500);
+                chatLogs.innerHTML += `<div class="msg vexyra"><b>VEXYRA:</b> ${resp}</div>`;
+                chatLogs.scrollTop = chatLogs.scrollHeight;
+                falar(resp);
+            }, 400);
         }
 
-        function atualizarFala(texto) {
-            speechCard.innerText = texto;
+        function falar(texto) {
+            speech.innerText = texto;
+            
+            // Animação da boca mexendo
+            clearInterval(talkingInterval);
+            let state = false;
+            talkingInterval = setInterval(() => {
+                mouth.setAttribute('d', state ? 'M 90,118 Q 100,128 110,118' : 'M 92,120 Q 100,115 108,120');
+                state = !state;
+            }, 120);
+
             if('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
                 const utter = new SpeechSynthesisUtterance(texto);
                 utter.lang = 'pt-BR';
+                utter.onend = () => {
+                    clearInterval(talkingInterval);
+                    mouth.setAttribute('d', 'M 90,118 Q 100,126 110,118');
+                };
                 window.speechSynthesis.speak(utter);
+            } else {
+                setTimeout(() => clearInterval(talkingInterval), 2000);
             }
         }
     </script>
