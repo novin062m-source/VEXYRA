@@ -1,177 +1,123 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VEXYRA 0.1</title>
-    <style>
-        body {
-            background-color: #0b0f19;
-            color: #ffffff;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-        }
-        h1 {
-            color: #a855f7;
-            margin-bottom: 5px;
-        }
-        canvas {
-            background: #111827;
-            border-radius: 12px;
-            box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
-            margin-bottom: 15px;
-        }
-        #chat-container {
-            width: 90%;
-            max-width: 400px;
-            background: #1f2937;
-            padding: 15px;
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        input {
-            padding: 10px;
-            border-radius: 5px;
-            border: none;
-            outline: none;
-            background: #374151;
-            color: white;
-        }
-        button {
-            padding: 10px;
-            border-radius: 5px;
-            border: none;
-            background: #a855f7;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        button:hover {
-            background: #9333ea;
-        }
-        #mensagens {
-            max-height: 120px;
-            overflow-y: auto;
-            font-size: 14px;
-            background: #111827;
-            padding: 8px;
-            border-radius: 5px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VEXYRA | Inteligência Artificial</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #09090e;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+    header {
+      padding: 22px;
+      border-bottom: 1px solid #292936;
+      color: #b69cff;
+      font-weight: bold;
+      letter-spacing: 3px;
+    }
+    main {
+      max-width: 750px;
+      margin: auto;
+      padding: 25px;
+    }
+    h1 { color: #b69cff; }
+    #chat {
+      min-height: 55vh;
+      padding: 18px;
+      background: #14141e;
+      border-radius: 15px;
+    }
+    .msg {
+      margin: 12px 0;
+      padding: 12px;
+      border-radius: 10px;
+      background: #262637;
+      overflow-wrap: anywhere;
+    }
+    .user { background: #403064; }
+    form {
+      display: flex;
+      gap: 8px;
+      margin-top: 15px;
+    }
+    input {
+      flex: 1;
+      min-width: 0;
+      padding: 15px;
+      border: none;
+      border-radius: 10px;
+    }
+    button {
+      background: #a98aff;
+      border: none;
+      border-radius: 10px;
+      padding: 12px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-
-    <h1>VEXYRA 0.1</h1>
-    <p style="color: #9ca3af; font-size: 14px;">Personagem Viva & Conectada</p>
-
-    <!-- Canvas da Personagem Viva (Animada, piscando e mexendo a boca) -->
-    <canvas id="vexyraCanvas" width="180" height="180"></canvas>
-
-    <div id="chat-container">
-        <div id="mensagens"><b>VEXYRA 0.1:</b> Olá Matheus! Estou pronta.</div>
-        <input type="text" id="userInput" placeholder="Digite algo para a Vexyra...">
-        <button onclick="enviarMensagem()">Enviar</button>
+  <header>VEXYRA</header>
+  <main>
+    <h1>Sua inteligência, seu universo.</h1>
+    <p>Muito além de uma IA.</p>
+    <div id="chat">
+      <div class="msg">VEXYRA: Olá! Bem-vindo ao futuro.</div>
     </div>
+    <form id="form">
+      <input id="mensagem" placeholder="Converse com VEXYRA..." required>
+      <button type="submit">Enviar</button>
+    </form>
+  </main>
+  <script>
+    const form = document.getElementById("form");
+    const chat = document.getElementById("chat");
+    const input = document.getElementById("mensagem");
 
-    <script>
-        const canvas = document.getElementById('vexyraCanvas');
-        const ctx = canvas.getContext('2d');
+    function adicionar(texto, classe = "") {
+      const div = document.createElement("div");
+      div.className = "msg " + classe;
+      div.textContent = texto;
+      chat.appendChild(div);
+    }
 
-        let estaFalando = false;
-        let bocaAberta = false;
-        let olhosFechados = false;
+    form.addEventListener("submit", async (event) => {
+  event.preventDefault();
 
-        // Piscar automático
-        setInterval(() => {
-            olhosFechados = true;
-            setTimeout(() => { olhosFechados = false; }, 150);
-        }, 3000);
+  const texto = input.value.trim();
+  if (!texto) return;
 
-        // Mexer a boca ao falar
-        setInterval(() => {
-            if (estaFalando) {
-                bocaAberta = !bocaAberta;
-            } else {
-                bocaAberta = false;
-            }
-        }, 150);
+  adicionar("Você: " + texto, "user");
+  input.value = "";
 
-        function desenhar() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+  try {
+    const resposta = await fetch(
+      "https://vexyra-api.novin062m.workers.dev",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ mensagem: texto })
+      }
+    );
 
-            // Cabeça
-            ctx.fillStyle = "#ffe0bd";
-            ctx.beginPath();
-            ctx.arc(90, 90, 55, 0, Math.PI * 2);
-            ctx.fill();
+         const dados = await resposta.json();
 
-            // Cabelo / Orelhas de Gato
-            ctx.fillStyle = "#d8b4fe";
-            ctx.beginPath(); ctx.moveTo(45, 55); ctx.lineTo(25, 20); ctx.lineTo(65, 40); ctx.fill();
-            ctx.beginPath(); ctx.moveTo(135, 55); ctx.lineTo(155, 20); ctx.lineTo(115, 40); ctx.fill();
+      adicionar(
+        "VEXYRA: " + (dados.resposta || dados.erro || "Não consegui responder.")
+      );
 
-            // Olhos
-            ctx.fillStyle = "#a855f7";
-            if (olhosFechados) {
-                ctx.fillRect(68, 85, 12, 2);
-                ctx.fillRect(100, 85, 12, 2);
-            } else {
-                ctx.beginPath();
-                ctx.arc(74, 85, 6, 0, Math.PI * 2);
-                ctx.arc(106, 85, 6, 0, Math.PI * 2);
-                ctx.fill();
-            }
+    } catch (erro) {
+      adicionar("VEXYRA: Erro: " + erro.message);
+    }
+  });
 
-            // Boca
-            ctx.fillStyle = "#e11d48";
-            ctx.beginPath();
-            if (bocaAberta) {
-                ctx.arc(90, 110, 7, 0, Math.PI);
-            } else {
-                ctx.arc(90, 110, 4, 0, Math.PI);
-            }
-            ctx.fill();
-
-            requestAnimationFrame(desenhar);
-        }
-        desenhar();
-
-        function enviarMensagem() {
-            const input = document.getElementById('userInput');
-            const txt = input.value.trim();
-            if(!txt) return;
-
-            const box = document.getElementById('mensagens');
-            box.innerHTML += `<br><b>Você:</b> ${txt}`;
-            input.value = "";
-
-            let resposta = "Entendido! Estou processando sua solicitação.";
-            if(txt.toLowerCase().includes("olá") || txt.toLowerCase().includes("oi")) {
-                resposta = "Oi Matheus! Como posso ajudar na Vexyra 0.1?";
-            }
-
-            box.innerHTML += `<br><b>VEXYRA:</b> ${resposta}`;
-            box.scrollTop = box.scrollHeight;
-
-            // Ativa animação da boca e voz
-            falar(resposta);
-        }
-
-        function falar(texto) {
-            estaFalando = true;
-            const synth = window.speechSynthesis;
-            const utterance = new SpeechSynthesisUtterance(texto);
-            utterance.lang = 'pt-BR';
-            utterance.onend = () => { estaFalando = false; };
-            synth.speak(utterance);
-        }
-    </script>
+  </script>
 </body>
 </html>
