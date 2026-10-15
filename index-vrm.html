@@ -541,10 +541,14 @@ if (personagem) {
         pernaD = -Math.sin(t * 5) * 0.3;
     }
 
-    ajustar('leftUpperArm','z',bracoE);
-    ajustar('rightUpperArm','z',bracoD);
-    ajustar('leftUpperArm','x',movE);
-    ajustar('rightUpperArm','x',movD);
+    // VEXYRA_BRACOS_CORRECAO_03
+    const modoBracos = window.vexyraPose || 'pe';
+    if (!['pe', 'neutra', 'sentada', 'acenando'].includes(modoBracos)) {
+        ajustar('leftUpperArm','z',bracoE);
+        ajustar('rightUpperArm','z',bracoD);
+        ajustar('leftUpperArm','x',movE);
+        ajustar('rightUpperArm','x',movD);
+    }
 
     ajustar('leftLowerArm','x',correndo ? -0.45 : dancando ? -0.7 : 0);
     ajustar('rightLowerArm','x',correndo ? -0.45 : dancando ? -0.7 : 0);
