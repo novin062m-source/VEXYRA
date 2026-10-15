@@ -340,6 +340,8 @@ html, body {
         }
 
         function setPose(pose, btn) {
+            window.vexyraPose = pose;
+            window.dispatchEvent(new Event('vexyra-pose'));
             highlightBtn(btn);
             speech.textContent = 'Pose solicitada: ' + pose;
         }
@@ -453,7 +455,30 @@ const clock=new THREE.Clock();
 function animar(){
  requestAnimationFrame(animar);
  const delta=clock.getDelta();
- if(personagem)personagem.update(delta);
+ 
+/* VEXYRA ANIMACAO VRM */
+if (personagem) {
+    const humanoid = personagem.humanoid;
+    const pose = window.vexyraPose || 'pe';
+    const sentado = pose === 'sentada';
+
+    const alvos = {
+        leftUpperLeg: sentado ? -1.15 : 0,
+        rightUpperLeg: sentado ? -1.15 : 0,
+        leftLowerLeg: sentado ? 1.3 : 0,
+        rightLowerLeg: sentado ? 1.3 : 0
+    };
+
+    for (const [nome, alvo] of Object.entries(alvos)) {
+        const osso = humanoid.getNormalizedBoneNode(nome);
+        if (osso) {
+            osso.rotation.x += (alvo - osso.rotation.x) * 0.08;
+        }
+    }
+
+    personagem.update(delta);
+}
+
  renderer.render(scene,camera);
 }
 animar();
