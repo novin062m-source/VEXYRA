@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VEXYRA | Inteligência Artificial</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #09090e;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+    header {
+      padding: 22px;
+      border-bottom: 1px solid #292936;
+      color: #b69cff;
+      font-weight: bold;
+      letter-spacing: 3px;
+    }
+    main {
+      max-width: 750px;
+      margin: auto;
+      padding: 25px;
+    }
+    h1 { color: #b69cff; }
+    #chat {
+      min-height: 55vh;
+      padding: 18px;
+      background: #14141e;
+      border-radius: 15px;
+    }
+    .msg {
+      margin: 12px 0;
+      padding: 12px;
+      border-radius: 10px;
+      background: #262637;
+      overflow-wrap: anywhere;
+    }
+    .user { background: #403064; }
+    form {
+      display: flex;
+      gap: 8px;
+      margin-top: 15px;
+    }
+    input {
+      flex: 1;
+      min-width: 0;
+      padding: 15px;
+      border: none;
+      border-radius: 10px;
+    }
+    button {
+      background: #a98aff;
+      border: none;
+      border-radius: 10px;
+      padding: 12px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header>VEXYRA</header>
+  <main>
+    <h1>Sua inteligência, seu universo.</h1>
+    <p>Muito além de uma IA.</p>
+    <div id="chat">
+      <div class="msg">VEXYRA: Olá! Bem-vindo ao futuro.</div>
+    </div>
+    <form id="form">
+      <input id="mensagem" placeholder="Converse com VEXYRA..." required>
+      <button type="submit">Enviar</button>
+    </form>
+  </main>
+  <script>
+    const form = document.getElementById("form");
+    const chat = document.getElementById("chat");
+    const input = document.getElementById("mensagem");
+
+    function adicionar(texto, classe = "") {
+      const div = document.createElement("div");
+      div.className = "msg " + classe;
+      div.textContent = texto;
+      chat.appendChild(div);
+    }
+
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+      const texto = input.value.trim();
+      if (!texto) return;
+      adicionar("Você: " + texto, "user");
+      input.value = "";
+      adicionar("VEXYRA: Minha inteligência ainda está sendo conectada.");
+    });
+  </script>
+</body>
+</html>
