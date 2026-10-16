@@ -3694,5 +3694,194 @@ html, body, .main-wrapper,
 })();
 </script>
 
+
+<!-- VEXYRA-CHAT-V14 -->
+<style id="vexyra-chat-v14">
+
+/* Esconde a linha decorativa antiga */
+.chat-column.vxr-inicial .vx-floor,
+.chat-column.vxr-inicial .vx-ground,
+.chat-column.vxr-inicial .vx-platform,
+.chat-column.vxr-inicial .vx-horizon {
+  display: none !important;
+}
+
+/* Novo campo */
+.chat-input-box {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  background: #0a0810 !important;
+  border: 1px solid #7031b8 !important;
+  border-radius: 22px !important;
+  padding: 8px !important;
+}
+
+.chat-input-box input#userInput {
+  min-width: 0 !important;
+  flex: 1 !important;
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  color: white !important;
+}
+
+#vx-add-v14,
+#vx-mic-v14 {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #1b1327;
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+#vx-mic-v14 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#vx-mic-v14 svg {
+  width: 21px;
+  height: 21px;
+}
+
+#vx-mic-v14.vx-gravando {
+  background: #a41c42;
+  box-shadow: 0 0 15px #e52b65;
+}
+
+#vx-file-name-v14 {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 12px;
+  right: 12px;
+  background: #171022;
+  border: 1px solid #743ab0;
+  border-radius: 12px;
+  padding: 10px;
+  font-size: 12px;
+  color: white;
+  overflow-wrap: anywhere;
+}
+
+</style>
+
+<script id="vexyra-chat-script-v14">
+(function () {
+  function iniciar() {
+    const caixa = document.querySelector(".chat-input-box");
+    const input = document.getElementById("userInput");
+
+    if (!caixa || !input) return;
+    if (document.getElementById("vx-add-v14")) return;
+
+    const arquivo = document.createElement("input");
+    arquivo.type = "file";
+    arquivo.id = "vx-file-v14";
+    arquivo.accept = "image/*,.pdf,.txt,.doc,.docx";
+    arquivo.style.display = "none";
+
+    const adicionar = document.createElement("button");
+    adicionar.type = "button";
+    adicionar.id = "vx-add-v14";
+    adicionar.textContent = "+";
+    adicionar.title = "Selecionar foto ou arquivo";
+
+    const microfone = document.createElement("button");
+    microfone.type = "button";
+    microfone.id = "vx-mic-v14";
+    microfone.title = "Ditar mensagem";
+    microfone.innerHTML = `
+      <svg viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round">
+        <rect x="9" y="2" width="6" height="12" rx="3"/>
+        <path d="M5 10a7 7 0 0 0 14 0"/>
+        <path d="M12 17v5"/>
+        <path d="M8 22h8"/>
+      </svg>
+    `;
+
+    const nome = document.createElement("div");
+    nome.id = "vx-file-name-v14";
+
+    caixa.prepend(adicionar);
+    caixa.appendChild(microfone);
+    caixa.appendChild(arquivo);
+    caixa.appendChild(nome);
+
+    adicionar.onclick = () => arquivo.click();
+
+    arquivo.onchange = () => {
+      const selecionado = arquivo.files[0];
+      if (!selecionado) return;
+
+      nome.style.display = "block";
+      nome.textContent =
+        "Arquivo selecionado: " + selecionado.name +
+        " — envio para a IA ainda não ativado.";
+    };
+
+    const SpeechRecognition =
+      window.SpeechRecognition ||
+      window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+      microfone.onclick = () => {
+        alert("Reconhecimento de voz indisponível neste navegador. Tente abrir no Chrome.");
+      };
+      return;
+    }
+
+    const reconhecimento = new SpeechRecognition();
+    reconhecimento.lang = "pt-BR";
+    reconhecimento.interimResults = false;
+
+    microfone.onclick = () => {
+      try {
+        reconhecimento.start();
+      } catch (e) {
+        reconhecimento.stop();
+      }
+    };
+
+    reconhecimento.onstart = () => {
+      microfone.classList.add("vx-gravando");
+    };
+
+    reconhecimento.onend = () => {
+      microfone.classList.remove("vx-gravando");
+    };
+
+    reconhecimento.onresult = evento => {
+      const texto = evento.results[0][0].transcript;
+      input.value = input.value
+        ? input.value + " " + texto
+        : texto;
+      input.focus();
+    };
+
+    reconhecimento.onerror = evento => {
+      microfone.classList.remove("vx-gravando");
+      if (evento.error !== "no-speech") {
+        alert("Não foi possível reconhecer a voz: " + evento.error);
+      }
+    };
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", iniciar);
+  } else {
+    iniciar();
+  }
+})();
+</script>
+
 </body>
 </html>
