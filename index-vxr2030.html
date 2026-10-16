@@ -3080,5 +3080,255 @@ document.addEventListener("DOMContentLoaded", function () {
 })();
 </script>
 
+
+<!-- VX-CLASSICO-V10 -->
+<style id="vx-classico-v10">
+
+/* Fundo cinematográfico preto */
+.chat-column,
+.chat-column.vxr-fundo-ativo {
+  background: #010104 !important;
+  isolation: isolate !important;
+  position: relative !important;
+}
+
+/* Remove visualizações antigas */
+.chat-column .vxr-lightning-v8,
+.chat-column #vx-clouds-v9,
+.chat-column .vxr-scene-v2,
+.chat-column .vxr-landscape,
+.chat-column .vxr-cinema-v3,
+.chat-column .vxr-storm-v6 {
+  display: none !important;
+}
+
+/* Novo cenário */
+#vx-tempestade-v10 {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      ellipse at 50% 53%,
+      rgba(75, 10, 120, .14),
+      transparent 43%
+    ),
+    linear-gradient(#020205, #040209 70%, #010103);
+}
+
+/* Nuvens feitas com múltiplas camadas */
+.vx-nuvem-v10 {
+  position: absolute;
+  width: 100%;
+  height: 33%;
+  opacity: .9;
+  filter: blur(13px);
+  background:
+    radial-gradient(ellipse at 10% 10%, #36313d 0%, transparent 37%),
+    radial-gradient(ellipse at 34% 15%, #1e1b26 0%, transparent 36%),
+    radial-gradient(ellipse at 65% 8%, #34303a 0%, transparent 35%),
+    radial-gradient(ellipse at 90% 15%, #22202b 0%, transparent 37%),
+    radial-gradient(ellipse at 45% 0%, #44404b 0%, transparent 43%);
+}
+
+.vx-nuvem-v10.topo {
+  top: -9%;
+}
+
+.vx-nuvem-v10.base {
+  bottom: -13%;
+  transform: rotate(180deg);
+  opacity: .55;
+}
+
+/* Raios brancos e roxos */
+#vx-tempestade-v10 svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  animation: vx-relampago-v10 3s linear infinite;
+}
+
+#vx-tempestade-v10 svg.segundo {
+  animation-delay: -1.5s;
+}
+
+#vx-tempestade-v10 path {
+  fill: none;
+  stroke: #f5eaff;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  filter:
+    drop-shadow(0 0 5px white)
+    drop-shadow(0 0 15px #8f35ff);
+}
+
+@keyframes vx-relampago-v10 {
+  0%, 2%, 5%, 8%, 100% { opacity: 0; }
+  3%, 6% { opacity: 1; }
+}
+
+/* VX no centro */
+.chat-column.vxr-inicial #vxr-welcome {
+  position: absolute !important;
+  top: 48% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: 95% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  z-index: 30 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 18px !important;
+}
+
+/* Remove os logos antigos */
+#vx-logo-v9,
+#vxr-welcome .vxr-symbol,
+#vxr-welcome .vxr-logo-angular {
+  display: none !important;
+}
+
+/* Logo metálico */
+#vx-logo-v10 {
+  display: block !important;
+  width: min(72vw, 370px);
+  height: auto;
+  overflow: visible;
+  filter:
+    drop-shadow(0 0 8px #b65aff)
+    drop-shadow(0 0 22px rgba(133, 30, 255, .65));
+}
+
+#vxr-welcome h2 {
+  color: #f0eaf8 !important;
+  text-align: center !important;
+  font-size: clamp(16px, 4vw, 22px) !important;
+  text-shadow: 0 0 12px rgba(120, 50, 190, .5);
+}
+
+/* Reflexo discreto no chão */
+#vx-tempestade-v10::after {
+  content: "";
+  position: absolute;
+  bottom: 12%;
+  left: 15%;
+  width: 70%;
+  height: 3px;
+  border-radius: 50%;
+  background: #8d32ee;
+  box-shadow:
+    0 0 15px #a13aff,
+    0 0 50px rgba(130, 40, 220, .45);
+  opacity: .65;
+}
+
+/* Sem logo pequeno no cabeçalho */
+#vxr-topbar strong {
+  display: none !important;
+}
+
+/* Durante a conversa, cenário discreto */
+.chat-column.vxr-conversando #vx-tempestade-v10 {
+  opacity: .15;
+}
+
+</style>
+
+<script id="vx-classico-v10-script">
+(function () {
+  function instalar() {
+    const chat = document.querySelector(".chat-column");
+    const welcome = document.getElementById("vxr-welcome");
+
+    if (!chat || !welcome) return;
+
+    if (!document.getElementById("vx-tempestade-v10")) {
+      const cena = document.createElement("div");
+      cena.id = "vx-tempestade-v10";
+      cena.setAttribute("aria-hidden", "true");
+
+      cena.innerHTML = `
+        <div class="vx-nuvem-v10 topo"></div>
+        <div class="vx-nuvem-v10 base"></div>
+
+        <svg viewBox="0 0 1000 1500"
+             preserveAspectRatio="none">
+          <path d="M170 0 L230 150 L195 260
+                   L275 365 L235 460 L320 610"/>
+          <path d="M275 365 L115 430 L165 525"/>
+        </svg>
+
+        <svg class="segundo"
+             viewBox="0 0 1000 1500"
+             preserveAspectRatio="none">
+          <path d="M840 0 L775 180 L825 280
+                   L735 395 L780 490 L680 640"/>
+          <path d="M735 395 L900 465 L840 570"/>
+        </svg>
+      `;
+
+      chat.prepend(cena);
+    }
+
+    if (!document.getElementById("vx-logo-v10")) {
+      const logo = document.createElementNS(
+        "http://www.w3.org/2000/svg", "svg"
+      );
+
+      logo.id = "vx-logo-v10";
+      logo.setAttribute("viewBox", "0 0 600 260");
+      logo.setAttribute("aria-label", "VX");
+
+      logo.innerHTML = `
+        <defs>
+          <linearGradient id="metal-v10"
+                          x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#f5ddff"/>
+            <stop offset="24%" stop-color="#a84dff"/>
+            <stop offset="50%" stop-color="#35056f"/>
+            <stop offset="76%" stop-color="#8232ed"/>
+            <stop offset="100%" stop-color="#e5aaff"/>
+          </linearGradient>
+        </defs>
+
+        <path
+          d="M20 30 L105 30 L190 160 L275 30
+             L350 30 L195 245 Z"
+          fill="url(#metal-v10)"
+          stroke="#d9a5ff"
+          stroke-width="3"
+        />
+
+        <path
+          d="M320 30 L405 30 L460 100
+             L515 30 L590 30 L510 135
+             L590 245 L505 245 L460 175
+             L410 245 L325 245 L410 135 Z"
+          fill="url(#metal-v10)"
+          stroke="#d9a5ff"
+          stroke-width="3"
+        />
+      `;
+
+      welcome.prepend(logo);
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", instalar);
+  } else {
+    instalar();
+  }
+})();
+</script>
+
 </body>
 </html>
