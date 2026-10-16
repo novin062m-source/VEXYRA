@@ -1771,5 +1771,237 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 <!-- VXR-FORMATADOR-FIM -->
 
+
+<!-- VXR-CENARIO-V2-INICIO -->
+<style id="vxr-cenario-v2">
+
+/* Desliga os desenhos geométricos antigos */
+.chat-column::before,
+.chat-column::after,
+.chat-column .vxr-landscape {
+  display: none !important;
+}
+
+/* Cenário principal */
+.chat-column {
+  position: relative !important;
+  isolation: isolate;
+  overflow: hidden !important;
+  background:
+    radial-gradient(
+      ellipse at 50% 62%,
+      #6a22b855 0%,
+      #230c3b33 29%,
+      transparent 62%
+    ),
+    linear-gradient(
+      180deg,
+      #020106 0%,
+      #080415 48%,
+      #150822 72%,
+      #030207 100%
+    ) !important;
+}
+
+/* Paisagem independente dos controles */
+.vxr-scene-v2 {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.vxr-scene-v2 svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Mantém o conteúdo na frente */
+#vxr-welcome,
+#vxr-topbar,
+.chat-logs,
+.chat-input-box {
+  position: relative;
+  z-index: 2;
+}
+
+/* Logo flutuando */
+#vxr-welcome .vxr-logo-angular {
+  filter: drop-shadow(0 12px 25px #7b20d966) !important;
+}
+
+/* Frase mais discreta */
+#vxr-welcome h2 {
+  font-size: clamp(17px, 2.2vw, 23px) !important;
+  font-weight: 500 !important;
+  letter-spacing: .2px;
+  text-align: center;
+  color: #e9d9ff !important;
+  text-shadow: 0 0 18px #6e24b8;
+}
+
+/* Durante a conversa, o cenário fica discreto */
+.chat-column.vxr-conversando .vxr-scene-v2 {
+  opacity: .13;
+}
+
+@media (max-width: 700px) {
+  .vxr-scene-v2 svg {
+    width: 170%;
+    max-width: none;
+    transform: translateX(-20.5%);
+  }
+}
+</style>
+
+<script id="vxr-scene-v2-script">
+(function () {
+  function instalar() {
+    const chat = document.querySelector(".chat-column");
+    if (!chat || chat.querySelector(".vxr-scene-v2")) return;
+
+    const scene = document.createElement("div");
+    scene.className = "vxr-scene-v2";
+    scene.setAttribute("aria-hidden", "true");
+
+    scene.innerHTML = `
+    <svg viewBox="0 0 1000 1000"
+         preserveAspectRatio="xMidYMid slice"
+         xmlns="http://www.w3.org/2000/svg">
+
+      <defs>
+        <radialGradient id="v2sky">
+          <stop offset="0%" stop-color="#7d2ad0" stop-opacity=".55"/>
+          <stop offset="55%" stop-color="#3d146b" stop-opacity=".2"/>
+          <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+        </radialGradient>
+
+        <linearGradient id="v2rock" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#211331"/>
+          <stop offset="45%" stop-color="#10091c"/>
+          <stop offset="100%" stop-color="#030207"/>
+        </linearGradient>
+
+        <linearGradient id="v2floor" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#5b1c8e" stop-opacity=".5"/>
+          <stop offset="45%" stop-color="#140821" stop-opacity=".7"/>
+          <stop offset="100%" stop-color="#020106"/>
+        </linearGradient>
+
+        <filter id="v2blur">
+          <feGaussianBlur stdDeviation="22"/>
+        </filter>
+
+        <filter id="v2glow">
+          <feGaussianBlur stdDeviation="5"/>
+        </filter>
+      </defs>
+
+      <!-- Atmosfera -->
+      <ellipse cx="500" cy="610" rx="420" ry="350"
+               fill="url(#v2sky)"/>
+
+      <!-- Feixe de luz -->
+      <path d="M495 220 L505 220 L570 780 L430 780 Z"
+            fill="#7420d8" opacity=".09"/>
+      <path d="M498 270 L502 270 L525 765 L475 765 Z"
+            fill="#b04bff" opacity=".17"
+            filter="url(#v2blur)"/>
+
+      <!-- Estrelas e partículas -->
+      <g fill="#c992ff">
+        <circle cx="120" cy="220" r="1.5" opacity=".7"/>
+        <circle cx="240" cy="360" r="2" opacity=".5"/>
+        <circle cx="350" cy="150" r="1.2" opacity=".8"/>
+        <circle cx="720" cy="270" r="1.8" opacity=".6"/>
+        <circle cx="850" cy="180" r="1.4" opacity=".8"/>
+        <circle cx="920" cy="410" r="2" opacity=".5"/>
+        <circle cx="610" cy="390" r="1.5" opacity=".7"/>
+        <circle cx="410" cy="430" r="1.3" opacity=".5"/>
+      </g>
+
+      <!-- Montanhas distantes -->
+      <path d="M0 640 L90 570 L145 600 L220 490
+               L290 570 L350 535 L430 650
+               L580 650 L660 520 L725 565
+               L800 480 L865 575 L940 520
+               L1000 590 L1000 810 L0 810 Z"
+            fill="#10091b" opacity=".85"/>
+
+      <!-- Rochas à esquerda -->
+      <path d="M0 420 L65 465 L110 430 L155 525
+               L190 505 L245 610 L300 630
+               L345 760 L0 840 Z"
+            fill="url(#v2rock)"/>
+
+      <path d="M0 420 L65 465 L110 430 L155 525"
+            fill="none" stroke="#683394"
+            stroke-width="2" opacity=".45"/>
+
+      <path d="M110 430 L130 550 L190 505
+               L215 620 L280 680"
+            fill="none" stroke="#8b4ac0"
+            stroke-width="1.5" opacity=".28"/>
+
+      <!-- Rochas à direita -->
+      <path d="M1000 390 L940 450 L895 420
+               L835 515 L795 490 L735 610
+               L690 625 L645 760 L1000 840 Z"
+            fill="url(#v2rock)"/>
+
+      <path d="M1000 390 L940 450 L895 420 L835 515"
+            fill="none" stroke="#7138a0"
+            stroke-width="2" opacity=".4"/>
+
+      <path d="M895 420 L875 550 L795 490
+               L775 615 L710 690"
+            fill="none" stroke="#9951cb"
+            stroke-width="1.5" opacity=".25"/>
+
+      <!-- Névoa no horizonte -->
+      <ellipse cx="500" cy="745" rx="410" ry="65"
+               fill="#9a3bff" opacity=".17"
+               filter="url(#v2blur)"/>
+
+      <!-- Chão escuro -->
+      <path d="M0 745 Q500 715 1000 745
+               L1000 1000 L0 1000 Z"
+            fill="url(#v2floor)"/>
+
+      <!-- Reflexos no chão -->
+      <g fill="none" stroke="#9e3bff">
+        <ellipse cx="500" cy="775" rx="230" ry="24"
+                 stroke-width="3" opacity=".65"/>
+        <ellipse cx="500" cy="782" rx="310" ry="39"
+                 stroke-width="2" opacity=".27"/>
+        <path d="M320 825 Q500 850 680 825"
+              stroke-width="2" opacity=".35"/>
+        <path d="M380 870 Q500 888 620 870"
+              stroke-width="2" opacity=".25"/>
+        <path d="M435 930 L565 930"
+              stroke-width="3" opacity=".16"/>
+      </g>
+
+      <!-- Luz refletida -->
+      <ellipse cx="500" cy="780" rx="180" ry="25"
+               fill="#9c3bff" opacity=".35"
+               filter="url(#v2glow)"/>
+
+    </svg>`;
+
+    chat.prepend(scene);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", instalar);
+  } else {
+    instalar();
+  }
+})();
+</script>
+<!-- VXR-CENARIO-V2-FIM -->
+
 </body>
 </html>
