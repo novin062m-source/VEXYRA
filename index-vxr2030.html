@@ -1027,6 +1027,97 @@ body.vxr-menu-aberto #vxr-menu-overlay {
   }
 }
 </style>
+
+<!-- VXR-RAIOS-FUNDO-V7 -->
+<style id="vxr-raios-fundo-v7">
+
+/* Remove o VXR pequeno do cabeçalho */
+#vxr-topbar strong {
+  display: none !important;
+}
+
+/* Mantém o menu à esquerda e o ponto à direita */
+#vxr-topbar {
+  display: flex !important;
+  justify-content: space-between !important;
+}
+
+/* VXR principal fixo na parte superior do cenário */
+.chat-column.vxr-inicial #vxr-welcome {
+  position: absolute !important;
+  top: 32% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 10 !important;
+}
+
+/* Logo sem animação */
+.chat-column.vxr-inicial #vxr-welcome .vxr-logo-angular,
+.chat-column.vxr-inicial #vxr-welcome .vxr-symbol {
+  animation: none !important;
+  transform: none !important;
+  filter:
+    drop-shadow(0 0 8px #c77aff)
+    drop-shadow(0 0 22px #852aff)
+    drop-shadow(0 0 38px rgba(130, 25, 230, .5))
+    !important;
+}
+
+/* Tempestade fica atrás do conteúdo */
+.chat-column .vxr-storm-v6 {
+  z-index: 1 !important;
+}
+
+.chat-column .vxr-raio {
+  opacity: 0;
+}
+
+/* Relâmpagos maiores e visíveis */
+.chat-column .vxr-raio path {
+  stroke: #e8c2ff !important;
+  stroke-width: 4 !important;
+  filter:
+    drop-shadow(0 0 7px #bc61ff)
+    drop-shadow(0 0 20px #822aff);
+}
+
+.chat-column .vxr-raio-1 {
+  animation: vxr-raio-real-1 7s linear infinite !important;
+}
+
+.chat-column .vxr-raio-2 {
+  animation: vxr-raio-real-2 9s linear infinite !important;
+}
+
+@keyframes vxr-raio-real-1 {
+  0%, 18%, 19%, 21%, 100% { opacity: 0; }
+  18.3%, 20% { opacity: 1; }
+}
+
+@keyframes vxr-raio-real-2 {
+  0%, 53%, 54%, 56%, 100% { opacity: 0; }
+  53.3%, 55% { opacity: .95; }
+}
+
+/* Fundo mais escuro */
+.chat-column,
+.chat-column.vxr-fundo-ativo {
+  background:
+    radial-gradient(
+      ellipse at 50% 55%,
+      rgba(88, 17, 150, .32),
+      transparent 58%
+    ),
+    linear-gradient(
+      180deg,
+      #010104,
+      #0b0314 55%,
+      #020105
+    ) !important;
+}
+
+</style>
+
 </head>
 <body>
 
