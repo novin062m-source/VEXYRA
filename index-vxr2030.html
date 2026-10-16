@@ -4077,5 +4077,186 @@ html, body, .main-wrapper,
 })();
 </script>
 
+
+<!-- VEXYRA-AUDIO-V16 -->
+<style>
+#vx-audio-v16 {
+  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  align-items: center;
+  gap: 12px;
+  padding: 0 14px;
+  border-radius: 22px;
+  background: #17151c;
+  color: white;
+}
+#vx-audio-v16.ativo { display: flex; }
+#vx-audio-v16 button {
+  background: none;
+  border: 0;
+  color: white;
+  font-size: 23px;
+  cursor: pointer;
+}
+#vx-audio-v16 .ondas {
+  flex: 1;
+  display: flex;
+  height: 35px;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+}
+#vx-audio-v16 .ondas i {
+  width: 3px;
+  height: 9px;
+  border-radius: 5px;
+  background: #aaa;
+  animation: vxonda .65s ease-in-out infinite alternate;
+}
+#vx-audio-v16 .ondas i:nth-child(3n) {
+  animation-delay: .2s;
+}
+#vx-audio-v16 .ondas i:nth-child(4n) {
+  animation-delay: .4s;
+}
+@keyframes vxonda {
+  to { height: 29px; }
+}
+#vx-audio-v16 .enviar-audio {
+  background: #8835f5;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+}
+.vx-ouvir-v16 {
+  margin-top: 8px;
+  padding: 6px 12px;
+  border: 1px solid #7338af;
+  border-radius: 15px;
+  background: #21132f;
+  color: white;
+}
+</style>
+<script>
+(function () {
+  function iniciar() {
+    const caixa = document.querySelector(".chat-input-box");
+    const mic = document.getElementById("vx-mic-v14");
+    const logs = document.getElementById("chatLogs");
+    if (!caixa || !mic || !logs) return;
+
+    caixa.style.position = "relative";
+
+    const painel = document.createElement("div");
+    painel.id = "vx-audio-v16";
+    painel.innerHTML =
+      '<button id="vx-cancelar-v16">×</button>' +
+      '<div class="ondas">' +
+      '<i></i>'.repeat(24) +
+      '</div>' +
+      '<button class="enviar-audio" id="vx-enviar-v16">↑</button>';
+    caixa.appendChild(painel);
+
+    let gravador, partes = [], fluxo;
+
+    async function parar() {
+      if (gravador && gravador.state === "recording") {
+        gravador.stop();
+      }
+      painel.classList.remove("ativo");
+    }
+
+    mic.onclick = async function () {
+      try {
+        if (!navigator.mediaDevices?.getUserMedia ||
+            !window.MediaRecorder) {
+          throw Error("Gravação indisponível neste navegador.");
+        }
+        fluxo = await navigator.mediaDevices.getUserMedia({
+          audio: true
+        });
+        partes = [];
+        gravador = new MediaRecorder(fluxo);
+        gravador.ondataavailable = e => {
+          if (e.data.size) partes.push(e.data);
+        };
+        gravador.onstop = () => {
+          fluxo.getTracks().forEach(t => t.stop());
+        };
+        gravador.start();
+        painel.classList.add("ativo");
+      } catch (e) {
+        alert("Microfone: " + e.message);
+      }
+    };
+
+    document.getElementById("vx-cancelar-v16").onclick = parar;
+
+    document.getElementById("vx-enviar-v16").onclick = async () => {
+      if (!gravador || gravador.state !== "recording") return;
+
+      gravador.addEventListener("stop", () => {
+        const blob = new Blob(partes, {
+          type: gravador.mimeType || "audio/webm"
+        });
+        const url = URL.createObjectURL(blob);
+        const msg = document.createElement("div");
+        msg.className = "msg user";
+        const audio = document.createElement("audio");
+        audio.controls = true;
+        audio.src = url;
+        msg.appendChild(audio);
+        logs.appendChild(msg);
+        logs.scrollTop = logs.scrollHeight;
+      }, { once: true });
+
+      await parar();
+    };
+
+    // Botão para ouvir as respostas da VEXYRA
+    const observer = new MutationObserver(() => {
+      logs.querySelectorAll(".msg.vexyra").forEach(msg => {
+        if (msg.querySelector(".vx-ouvir-v16")) return;
+        if (msg.textContent.includes("Pensando...")) return;
+
+        const botao = document.createElement("button");
+        botao.className = "vx-ouvir-v16";
+        botao.textContent = "🔊 Ouvir";
+
+        botao.onclick = () => {
+          if (!window.speechSynthesis) {
+            alert("Voz indisponível neste navegador.");
+            return;
+          }
+          speechSynthesis.cancel();
+          const fala = new SpeechSynthesisUtterance(
+            msg.textContent.replace("VEXYRA:", "").replace("🔊 Ouvir", "")
+          );
+          fala.lang = "pt-BR";
+          fala.rate = 1;
+          speechSynthesis.speak(fala);
+        };
+
+        msg.appendChild(botao);
+      });
+    });
+
+    observer.observe(logs, {
+      childList: true,
+      subtree: true,
+      characterData: true
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", iniciar);
+  } else {
+    iniciar();
+  }
+})();
+</script>
+
 </body>
 </html>
