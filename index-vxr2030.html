@@ -2884,5 +2884,201 @@ document.addEventListener("DOMContentLoaded", function () {
 })();
 </script>
 
+
+<!-- VX-DARK-V9 -->
+<style id="vx-dark-v9">
+
+/* Fundo escuro, sem cenário roxo antigo */
+.chat-column,
+.chat-column.vxr-fundo-ativo {
+  background: #010103 !important;
+  position: relative !important;
+  isolation: isolate;
+}
+
+.chat-column.vxr-inicial::before {
+  content: "" !important;
+  display: block !important;
+  position: absolute !important;
+  inset: 0 !important;
+  background:
+    radial-gradient(
+      ellipse at 50% 49%,
+      rgba(86, 0, 150, .12),
+      transparent 40%
+    ) !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Desliga elementos antigos */
+.vxr-scene-v2,
+.vxr-cinema-v3,
+.vxr-landscape,
+.vxr-lightning-v8,
+.vxr-storm-v6 {
+  display: none !important;
+}
+
+/* VX centralizado */
+.chat-column.vxr-inicial #vxr-welcome {
+  position: absolute !important;
+  top: 49% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: 95% !important;
+  max-width: 520px !important;
+  z-index: 30 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 20px !important;
+}
+
+/* Esconde o logo antigo, sem apagar código */
+.chat-column.vxr-inicial #vxr-welcome .vxr-symbol {
+  display: none !important;
+}
+
+/* Novo VX estilizado */
+#vx-logo-v9 {
+  width: min(75vw, 390px);
+  max-width: 100%;
+  height: auto;
+  overflow: visible;
+  filter:
+    drop-shadow(0 0 8px #b357ff)
+    drop-shadow(0 0 24px rgba(128, 0, 255, .75));
+  animation: vx-brilho-v9 4s ease-in-out infinite;
+}
+
+@keyframes vx-brilho-v9 {
+  0%, 100% {
+    filter:
+      drop-shadow(0 0 7px #a43cff)
+      drop-shadow(0 0 20px rgba(120, 0, 240, .55));
+  }
+  50% {
+    filter:
+      drop-shadow(0 0 12px #d49aff)
+      drop-shadow(0 0 32px rgba(148, 0, 255, .85));
+  }
+}
+
+/* Nuvens sombrias nos cantos */
+#vx-clouds-v9 {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+#vx-clouds-v9::before,
+#vx-clouds-v9::after {
+  content: "";
+  position: absolute;
+  width: 90vw;
+  height: 38vh;
+  opacity: .55;
+  filter: blur(24px);
+  background:
+    radial-gradient(ellipse at 15% 35%, #34343b 0%, transparent 42%),
+    radial-gradient(ellipse at 40% 20%, #25252e 0%, transparent 44%),
+    radial-gradient(ellipse at 70% 50%, #3b3b43 0%, transparent 45%),
+    radial-gradient(ellipse at 45% 75%, #15151d 0%, transparent 50%);
+}
+
+#vx-clouds-v9::before {
+  top: -10%;
+  left: -28%;
+  transform: rotate(-15deg);
+}
+
+#vx-clouds-v9::after {
+  bottom: -9%;
+  right: -28%;
+  transform: rotate(165deg);
+}
+
+/* Cabeçalho sem VXR */
+#vxr-topbar strong {
+  display: none !important;
+}
+
+/* Mensagem de boas-vindas */
+#vxr-welcome h2 {
+  color: #e9def6 !important;
+  text-align: center !important;
+  text-shadow: 0 0 12px rgba(140, 50, 220, .3);
+}
+
+</style>
+
+<script id="vx-dark-v9-script">
+(function () {
+  function iniciar() {
+    const chat = document.querySelector(".chat-column");
+    const welcome = document.getElementById("vxr-welcome");
+
+    if (!chat || !welcome) return;
+
+    if (!document.getElementById("vx-clouds-v9")) {
+      const clouds = document.createElement("div");
+      clouds.id = "vx-clouds-v9";
+      clouds.setAttribute("aria-hidden", "true");
+      chat.prepend(clouds);
+    }
+
+    if (!document.getElementById("vx-logo-v9")) {
+      const logo = document.createElementNS(
+        "http://www.w3.org/2000/svg", "svg"
+      );
+
+      logo.setAttribute("id", "vx-logo-v9");
+      logo.setAttribute("viewBox", "0 0 600 260");
+      logo.setAttribute("aria-label", "VX");
+
+      logo.innerHTML = `
+        <defs>
+          <linearGradient id="vx-metal-v9" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#f4c5ff"/>
+            <stop offset="25%" stop-color="#aa47ff"/>
+            <stop offset="60%" stop-color="#4b08a6"/>
+            <stop offset="100%" stop-color="#cb7dff"/>
+          </linearGradient>
+        </defs>
+
+        <path
+          d="M25 35 L110 35 L190 160 L270 35
+             L345 35 L195 245 Z"
+          fill="url(#vx-metal-v9)"
+          stroke="#d6a0ff"
+          stroke-width="3"
+        />
+
+        <path
+          d="M330 35 L415 35 L460 100
+             L505 35 L585 35 L510 135
+             L590 245 L505 245 L460 175
+             L410 245 L325 245 L410 135 Z"
+          fill="url(#vx-metal-v9)"
+          stroke="#d6a0ff"
+          stroke-width="3"
+        />
+      `;
+
+      welcome.prepend(logo);
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", iniciar);
+  } else {
+    iniciar();
+  }
+})();
+</script>
+
 </body>
 </html>
