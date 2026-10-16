@@ -903,6 +903,33 @@ body.vxr-menu-aberto #vxr-menu-overlay {
   display: none !important;
 }
 </style>
+
+<!-- VXR-LIMPEZA-CENARIO-V4 -->
+<style>
+/* Oculta apenas os cenários antigos */
+.chat-column .vxr-scene-v2,
+.chat-column .vxr-cinema-v3,
+.chat-column .vxr-landscape {
+    display: none !important;
+}
+
+/* Fundo escuro e limpo */
+.chat-column,
+.chat-column.vxr-fundo-ativo {
+    background:
+      radial-gradient(
+        ellipse at 50% 62%,
+        rgba(99, 28, 167, .22),
+        transparent 48%
+      ),
+      linear-gradient(
+        180deg,
+        #020106 0%,
+        #080311 65%,
+        #020106 100%
+      ) !important;
+}
+</style>
 </head>
 <body>
 
