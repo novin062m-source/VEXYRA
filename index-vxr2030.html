@@ -662,6 +662,144 @@ body.vxr-menu-aberto #vxr-menu-overlay {
 }
 </style>
 
+
+<!-- VXR-CENARIO-2030 -->
+<style id="vxr-cenario-2030">
+.chat-column {
+  position: relative !important;
+  isolation: isolate;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 50% 58%, #351066 0%, transparent 35%),
+    radial-gradient(ellipse at 50% 95%, #17052d 0%, transparent 55%),
+    #030207 !important;
+}
+
+/* Luz vertical do cenário */
+.chat-column::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  left: 50%;
+  top: 13%;
+  width: 3px;
+  height: 68%;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    transparent,
+    #842aff00 10%,
+    #b04bff 48%,
+    #e4aaff 55%,
+    #7a20ff 70%,
+    transparent
+  );
+  box-shadow:
+    0 0 18px 5px #912cff80,
+    0 0 65px 16px #7620ff45;
+  opacity: .7;
+}
+
+/* Plataforma luminosa no chão */
+.chat-column::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  left: 50%;
+  bottom: 17%;
+  width: min(85%, 760px);
+  height: 120px;
+  transform: translateX(-50%) perspective(220px) rotateX(68deg);
+  border: 2px solid #9235ff;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse,
+    #ae52ff33,
+    #6413be12 55%,
+    transparent 72%
+  );
+  box-shadow:
+    0 0 25px #8d2dff,
+    inset 0 0 35px #7c20e8,
+    0 0 90px 15px #751dff55;
+}
+
+/* Símbolo VXR */
+#vxr-welcome .vxr-symbol {
+  position: relative;
+  z-index: 2;
+  font-family: Arial, sans-serif;
+  font-size: clamp(85px, 18vw, 220px) !important;
+  font-weight: 1000 !important;
+  font-style: italic;
+  letter-spacing: -.12em;
+  padding-right: .14em;
+  color: #b66aff !important;
+  background: linear-gradient(
+    155deg,
+    #f2caff 8%,
+    #9b39ff 37%,
+    #5514aa 52%,
+    #ce7aff 76%,
+    #6414db 95%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter:
+    drop-shadow(0 0 10px #922eff)
+    drop-shadow(0 0 28px #6b15d9);
+  transform: skewX(-9deg);
+}
+
+#vxr-welcome h2 {
+  position: relative;
+  z-index: 2;
+  color: #f0e6ff !important;
+  text-shadow: 0 0 15px #8e37ff80;
+}
+
+/* Moldura e caixa de mensagem */
+.chat-input-box {
+  position: relative;
+  z-index: 3;
+  border: 1px solid #8732e9 !important;
+  border-radius: 17px !important;
+  box-shadow:
+    0 0 18px #7021df55,
+    inset 0 0 15px #53168b33 !important;
+}
+
+#vxr-topbar {
+  position: relative;
+  z-index: 4;
+}
+
+/* Na conversa, reduzir o brilho para facilitar a leitura */
+.chat-column.vxr-conversando::before,
+.chat-column.vxr-conversando::after {
+  opacity: .12;
+}
+
+.chat-column.vxr-conversando {
+  background: #06040d !important;
+}
+
+@media (max-width: 700px) {
+  .chat-column::after {
+    bottom: 23%;
+    height: 80px;
+    width: 94%;
+  }
+  .chat-column::before {
+    top: 19%;
+    height: 56%;
+  }
+}
+</style>
+<!-- /VXR-CENARIO-2030 -->
+
 </head>
 <body>
 
