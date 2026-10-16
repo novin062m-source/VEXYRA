@@ -2450,5 +2450,201 @@ document.addEventListener("DOMContentLoaded", function () {
 })();
 </script>
 
+
+<!-- VXR-TEMPESTADE-V6 -->
+<style id="vxr-tempestade-v6">
+
+/* Fundo roxo sombrio */
+.chat-column,
+.chat-column.vxr-fundo-ativo {
+  background:
+    radial-gradient(
+      ellipse at 50% 53%,
+      rgba(105, 22, 170, .42),
+      rgba(43, 9, 75, .28) 35%,
+      transparent 72%
+    ),
+    linear-gradient(
+      180deg,
+      #020106 0%,
+      #10051d 45%,
+      #190729 70%,
+      #020106 100%
+    ) !important;
+}
+
+/* Remove as paisagens antigas */
+.chat-column .vxr-scene-v2,
+.chat-column .vxr-cinema-v3,
+.chat-column .vxr-landscape {
+  display: none !important;
+}
+
+/* VXR no centro da área principal */
+.chat-column.vxr-inicial #vxr-welcome {
+  position: absolute !important;
+  top: 46% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: 94% !important;
+  max-width: 680px !important;
+  height: auto !important;
+  min-height: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 18px !important;
+  z-index: 5 !important;
+}
+
+/* Logo mais intenso */
+.chat-column.vxr-inicial #vxr-welcome .vxr-logo-angular,
+.chat-column.vxr-inicial #vxr-welcome .vxr-symbol {
+  width: min(76vw, 410px) !important;
+  max-width: 410px !important;
+  height: auto !important;
+  filter:
+    drop-shadow(0 0 8px #d58aff)
+    drop-shadow(0 0 24px #962cff)
+    drop-shadow(0 0 50px rgba(119, 22, 230, .75))
+    !important;
+  animation: vxr-respirar 4s ease-in-out infinite;
+}
+
+@keyframes vxr-respirar {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: .94;
+    transform: scale(1.035);
+  }
+}
+
+.chat-column.vxr-inicial #vxr-welcome h2 {
+  color: #f0e5ff !important;
+  text-shadow: 0 0 18px #822ed4;
+  font-size: clamp(17px, 3.8vw, 23px) !important;
+  text-align: center !important;
+}
+
+/* Camada de tempestade */
+.vxr-storm-v6 {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Nuvens roxas */
+.vxr-storm-v6::before {
+  content: "";
+  position: absolute;
+  inset: -15%;
+  background:
+    radial-gradient(ellipse at 20% 32%,
+      rgba(96, 30, 160, .22), transparent 40%),
+    radial-gradient(ellipse at 80% 48%,
+      rgba(131, 34, 190, .20), transparent 43%),
+    radial-gradient(ellipse at 45% 80%,
+      rgba(67, 12, 110, .22), transparent 50%);
+  filter: blur(38px);
+  animation: vxr-nuvens 18s ease-in-out infinite alternate;
+}
+
+@keyframes vxr-nuvens {
+  from { transform: translateX(-5%); }
+  to   { transform: translateX(5%); }
+}
+
+/* Relâmpagos */
+.vxr-raio {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  inset: 0;
+  opacity: 0;
+}
+
+.vxr-raio path {
+  fill: none;
+  stroke: #d7a2ff;
+  stroke-width: 2;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 9px #b14dff);
+}
+
+.vxr-raio-1 {
+  animation: vxr-flash-1 11s infinite;
+}
+
+.vxr-raio-2 {
+  animation: vxr-flash-2 15s infinite;
+}
+
+@keyframes vxr-flash-1 {
+  0%, 12%, 14%, 15%, 100% { opacity: 0; }
+  12.3%, 13.1%, 14.4% { opacity: .85; }
+}
+
+@keyframes vxr-flash-2 {
+  0%, 65%, 67%, 68%, 100% { opacity: 0; }
+  65.3%, 66.2%, 67.4% { opacity: .7; }
+}
+
+/* Durante conversas, efeitos discretos */
+.chat-column.vxr-conversando .vxr-storm-v6 {
+  opacity: .15;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vxr-storm-v6 *,
+  .vxr-storm-v6::before,
+  #vxr-welcome .vxr-logo-angular {
+    animation: none !important;
+  }
+}
+</style>
+
+<script id="vxr-tempestade-v6-script">
+(function () {
+  function instalar() {
+    const chat = document.querySelector(".chat-column");
+
+    if (!chat || chat.querySelector(".vxr-storm-v6")) return;
+
+    const storm = document.createElement("div");
+    storm.className = "vxr-storm-v6";
+    storm.setAttribute("aria-hidden", "true");
+
+    storm.innerHTML = `
+      <svg class="vxr-raio vxr-raio-1"
+           viewBox="0 0 1000 1200"
+           preserveAspectRatio="none">
+        <path d="M160 80 L220 210 L185 280
+                 L270 400 L230 470 L320 600"/>
+      </svg>
+
+      <svg class="vxr-raio vxr-raio-2"
+           viewBox="0 0 1000 1200"
+           preserveAspectRatio="none">
+        <path d="M850 110 L790 230 L825 310
+                 L740 440 L770 520 L680 660"/>
+      </svg>
+    `;
+
+    chat.prepend(storm);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", instalar);
+  } else {
+    instalar();
+  }
+})();
+</script>
+
 </body>
 </html>
