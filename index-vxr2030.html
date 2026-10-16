@@ -827,6 +827,75 @@ body.vxr-menu-aberto #vxr-menu-overlay {
   }
 }
 </style>
+
+<!-- VXR-PAISAGEM-2030 -->
+<style id="vxr-paisagem-2030">
+.chat-column {
+  background:
+    radial-gradient(ellipse at 50% 72%, #4d168e55, transparent 35%),
+    linear-gradient(180deg, #020106, #080313 65%, #030106) !important;
+}
+
+.chat-column .vxr-landscape {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.vxr-landscape::before {
+  content: "";
+  position: absolute;
+  inset: 12% 0 22%;
+  background:
+    radial-gradient(1px 1px at 10% 15%, #a76cff, transparent),
+    radial-gradient(2px 2px at 25% 35%, #b96bff, transparent),
+    radial-gradient(1px 1px at 65% 12%, #dbaaff, transparent),
+    radial-gradient(2px 2px at 80% 40%, #8b38ff, transparent),
+    radial-gradient(1px 1px at 90% 18%, #e7bdff, transparent),
+    radial-gradient(1px 1px at 42% 28%, #a76cff, transparent);
+  background-size: 180px 220px;
+  opacity: .75;
+}
+
+.vxr-mountain {
+  position: absolute;
+  bottom: 25%;
+  width: 48%;
+  height: 38%;
+  background: linear-gradient(140deg, #160b29, #030207 70%);
+  filter: drop-shadow(0 0 12px #6519ba55);
+}
+
+.vxr-mountain.left {
+  left: -5%;
+  clip-path: polygon(0 30%, 18% 12%, 31% 40%, 48% 20%, 65% 55%, 80% 40%, 100% 100%, 0 100%);
+}
+
+.vxr-mountain.right {
+  right: -5%;
+  transform: scaleX(-1);
+  clip-path: polygon(0 30%, 18% 12%, 31% 40%, 48% 20%, 65% 55%, 80% 40%, 100% 100%, 0 100%);
+}
+
+.vxr-floor {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 15%;
+  height: 22%;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 24px, #7422c522 25px 26px),
+    linear-gradient(180deg, #51159d44, #08030f 75%);
+  transform: perspective(300px) rotateX(45deg);
+  opacity: .7;
+}
+
+.chat-column.vxr-conversando .vxr-landscape {
+  opacity: .12;
+}
+</style>
 </head>
 <body>
 
@@ -888,6 +957,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
         <!-- COLUNA CENTRAL: CHAT E MÓDULOS -->
         <div class="chat-column">
+<div class="vxr-landscape" aria-hidden="true">
+  <div class="vxr-mountain left"></div>
+  <div class="vxr-mountain right"></div>
+  <div class="vxr-floor"></div>
+</div>
+
             <div id="vxr-topbar">
       <button type="button" onclick="document.querySelector('.sidebar').classList.toggle('vxr-open')">☰</button>
       <strong>VXR</strong>
