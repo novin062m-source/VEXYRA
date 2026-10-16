@@ -1723,7 +1723,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function limparMarkdown(texto) {
     return texto
       .replace(/\r/g, '')
-      .replace(/^\s{0,3}#{1,6}\s*/gm, '')
+      .replace(/(^\s*(?:VEXYRA(?: 0\.1)?:\s*)?)#{1,6}\s*/gmi, '$1').replace(/^\s{0,3}#{1,6}\s*/gm, '')
       .replace(/\*{1,3}/g, '')
       .replace(/^\s*[-_]{3,}\s*$/gm, '')
       .replace(/^\s*>\s?/gm, '')
