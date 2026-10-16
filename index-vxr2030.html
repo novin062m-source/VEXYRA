@@ -3564,5 +3564,135 @@ document.addEventListener("DOMContentLoaded", function () {
 })();
 </script>
 
+
+<!-- VEXYRA-CLEAN-V13 -->
+<style>
+/* Preto absoluto */
+html, body, .main-wrapper,
+.chat-column, .chat-column.vxr-inicial,
+.chat-column.vxr-fundo-ativo {
+  background: #000 !important;
+  background-image: none !important;
+}
+
+/* Remove VX, saudação e linha decorativa */
+#vxr-welcome,
+#vx-logo-v9,
+#vx-clouds-v9,
+.vxr-scene-v2,
+.vxr-landscape {
+  display: none !important;
+}
+
+.chat-column.vxr-inicial #vxr-welcome {
+  display: none !important;
+}
+
+.chat-column::before,
+.chat-column::after {
+  display: none !important;
+}
+
+/* Cabeçalho */
+#vxr-topbar {
+  background: #000 !important;
+  z-index: 100 !important;
+}
+
+#vxr-topbar strong {
+  color: #dcb5ff !important;
+  letter-spacing: 5px;
+  text-shadow: 0 0 15px #8c32ff;
+}
+
+/* Relâmpagos */
+#vx-lightning-v13 {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 3;
+}
+
+#vx-lightning-v13 svg {
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  animation: vx-lightning-v13 3s infinite;
+  filter: drop-shadow(0 0 9px white);
+}
+
+@keyframes vx-lightning-v13 {
+  0%, 3%, 6%, 100% { opacity: 0; }
+  1%, 4% { opacity: 1; }
+  2%, 5% { opacity: .15; }
+}
+
+.chat-logs,
+.chat-input-box {
+  z-index: 10 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #vx-lightning-v13 svg {
+    animation: none !important;
+  }
+}
+</style>
+
+<script>
+(function () {
+  function aplicar() {
+    const chat = document.querySelector(".chat-column");
+    if (!chat) return;
+
+    const titulo = document.querySelector("#vxr-topbar strong");
+    if (titulo) titulo.textContent = "VEXYRA";
+
+    /* Remove elementos antigos que foram inseridos por JS */
+    [
+      "vx-logo-v9",
+      "vx-clouds-v9",
+      "vxr-welcome"
+    ].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.remove();
+    });
+
+    if (!document.getElementById("vx-lightning-v13")) {
+      const raios = document.createElement("div");
+      raios.id = "vx-lightning-v13";
+
+      raios.innerHTML = `
+        <svg viewBox="0 0 400 800"
+             preserveAspectRatio="none"
+             aria-hidden="true">
+          <path
+            d="M50 0 L110 120 L80 180
+               L145 270 L120 330
+               L190 440"
+            stroke="white"
+            stroke-width="3"
+            fill="none"/>
+          <path
+            d="M145 270 L210 310 L225 380"
+            stroke="white"
+            stroke-width="1.5"
+            fill="none"/>
+        </svg>
+      `;
+
+      chat.prepend(raios);
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", aplicar);
+  } else {
+    aplicar();
+  }
+})();
+</script>
+
 </body>
 </html>
