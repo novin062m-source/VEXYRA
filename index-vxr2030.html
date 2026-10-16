@@ -930,6 +930,103 @@ body.vxr-menu-aberto #vxr-menu-overlay {
       ) !important;
 }
 </style>
+
+<!-- VXR-DARK-PREMIUM-V5 -->
+<style id="vxr-dark-premium-v5">
+
+.chat-column,
+.chat-column.vxr-fundo-ativo {
+  background:
+    radial-gradient(
+      ellipse at 50% 37%,
+      rgba(95, 22, 155, .16),
+      transparent 38%
+    ),
+    linear-gradient(
+      180deg,
+      #010104 0%,
+      #06030d 55%,
+      #010104 100%
+    ) !important;
+}
+
+/* Desativa todos os cenários anteriores */
+.chat-column .vxr-scene-v2,
+.chat-column .vxr-cinema-v3,
+.chat-column .vxr-landscape {
+  display: none !important;
+}
+
+/* Posiciona a apresentação mais acima */
+.chat-column.vxr-inicial #vxr-welcome {
+  position: absolute !important;
+  top: 22% !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: 92% !important;
+  max-width: 650px !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 20px !important;
+  z-index: 3 !important;
+}
+
+/* Reduz o VXR angular */
+.chat-column.vxr-inicial #vxr-welcome .vxr-logo-angular,
+.chat-column.vxr-inicial #vxr-welcome .vxr-symbol {
+  width: min(68vw, 350px) !important;
+  max-width: 350px !important;
+  height: auto !important;
+  margin: 0 auto !important;
+  filter:
+    drop-shadow(0 0 10px rgba(161, 69, 255, .65))
+    drop-shadow(0 0 28px rgba(110, 27, 200, .3)) !important;
+}
+
+/* Caso o símbolo use SVG */
+.chat-column.vxr-inicial #vxr-welcome .vxr-logo-angular svg {
+  width: 100% !important;
+  height: auto !important;
+}
+
+/* Frase discreta */
+.chat-column.vxr-inicial #vxr-welcome h2 {
+  font-size: clamp(16px, 3.8vw, 21px) !important;
+  font-weight: 400 !important;
+  color: #e7def4 !important;
+  text-align: center !important;
+  text-shadow: 0 0 14px rgba(128, 48, 215, .35);
+  margin: 0 !important;
+}
+
+/* Barra superior mais elegante */
+#vxr-topbar {
+  background: rgba(2, 1, 7, .94) !important;
+  border-bottom: 1px solid rgba(135, 51, 225, .15) !important;
+}
+
+/* Mantém o campo de mensagens destacado */
+.chat-input-box {
+  box-shadow: 0 0 22px rgba(99, 28, 176, .12) !important;
+}
+
+@media (max-width: 700px) {
+  .chat-column.vxr-inicial #vxr-welcome {
+    top: 20% !important;
+  }
+
+  .chat-column.vxr-inicial #vxr-welcome .vxr-logo-angular,
+  .chat-column.vxr-inicial #vxr-welcome .vxr-symbol {
+    width: 66vw !important;
+  }
+}
+</style>
 </head>
 <body>
 
