@@ -1174,5 +1174,68 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 
+
+<style id="vxr-welcome-controller">
+.chat-column {
+  min-height: 0 !important;
+}
+
+#vxr-welcome {
+  flex-shrink: 0;
+}
+
+.chat-column.vxr-conversando #vxr-welcome {
+  display: none !important;
+}
+
+.chat-column.vxr-inicial .chat-logs {
+  display: none !important;
+}
+
+.chat-column.vxr-inicial #vxr-welcome {
+  display: block !important;
+}
+
+.chat-column.vxr-inicial {
+  justify-content: space-between !important;
+}
+
+.chat-column.vxr-inicial #vxr-welcome {
+  margin: auto 0 !important;
+}
+
+.chat-column.vxr-conversando .chat-logs {
+  display: flex !important;
+  flex: 1 !important;
+}
+
+@media(max-width:768px) {
+  .chat-column.vxr-inicial #vxr-welcome {
+    padding: 20px 12px !important;
+  }
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const chat = document.querySelector(".chat-column");
+  const logs = document.getElementById("chatLogs");
+
+  if (!chat || !logs) return;
+
+  function atualizarTela() {
+    const temConversa = logs.querySelectorAll(".msg").length > 1;
+
+    chat.classList.toggle("vxr-conversando", temConversa);
+    chat.classList.toggle("vxr-inicial", !temConversa);
+  }
+
+  const observador = new MutationObserver(atualizarTela);
+  observador.observe(logs, { childList: true });
+
+  atualizarTela();
+});
+</script>
+
 </body>
 </html>
