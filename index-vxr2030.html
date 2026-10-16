@@ -1524,7 +1524,10 @@ document.addEventListener("DOMContentLoaded", function () {
 async function enviarMsg() {
             const input = document.getElementById('userInput');
             const txt = input.value.trim();
-            if (!txt) return;
+            // VEXYRA_IMAGEM_ENVIO_V1
+            const imagemPendente = window.vexyraImagemPendente || "";
+
+            if (!txt && !imagemPendente) return;
             interpretarMovimento(txt);
 
             const user = document.createElement('div');
@@ -1532,6 +1535,11 @@ async function enviarMsg() {
             user.textContent = 'Você: ' + txt;
             chatLogs.appendChild(user);
             input.value = '';
+            // Imagem mantida até confirmar o envio.
+            const seletorImagem = document.getElementById("vx-file-v14");
+            // Arquivo mantido até a resposta.
+            const avisoImagem = document.getElementById("vx-file-name-v14");
+            // Aviso mantido durante o envio.
 
             const resposta = document.createElement('div');
             resposta.className = 'msg vexyra';
@@ -1544,7 +1552,7 @@ async function enviarMsg() {
                     {
                         method: 'POST',
                         headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({mensagem: txt, historico: vexyraHistorico.slice(-20)})
+                        body: JSON.stringify({mensagem: txt, imagem: imagemPendente, historico: vexyraHistorico.slice(-20)})
                     }
                 );
 
@@ -1562,6 +1570,11 @@ async function enviarMsg() {
                 vexyraHistorico = vexyraHistorico.slice(-40);
                 salvarMemoriaVexyra();
                 resposta.textContent = 'VEXYRA: ' + texto;
+                if (imagemPendente && window.vexyraImagemPendente === imagemPendente) {
+                    window.vexyraImagemPendente = "";
+                    if (seletorImagem) seletorImagem.value = "";
+                    if (avisoImagem) avisoImagem.style.display = "none";
+                }
                 speech.textContent = texto;
             } catch (e) {
                 resposta.textContent = 'Erro na conexão: ' + e.message;
@@ -3986,10 +3999,31 @@ html, body, .main-wrapper,
         return;
       }
 
+      // VEXYRA_LEITOR_IMAGEM_V1
       if (selecionado.type.startsWith("image/")) {
-        nome.textContent =
-          "Foto selecionada: " + selecionado.name +
-          ". A análise de imagens ainda precisa ser ativada.";
+        if (!["image/jpeg", "image/png", "image/webp"].includes(selecionado.type)) {
+          nome.textContent = "Use JPG, PNG ou WebP.";
+          return;
+        }
+
+        try {
+          const leitor = new FileReader();
+
+          leitor.onload = () => {
+            window.vexyraImagemPendente = leitor.result;
+            nome.textContent =
+              "Foto pronta: " + selecionado.name +
+              ". Digite uma pergunta ou toque em enviar.";
+          };
+
+          leitor.onerror = () => {
+            nome.textContent = "Erro ao carregar a imagem.";
+          };
+
+          leitor.readAsDataURL(selecionado);
+        } catch (erro) {
+          nome.textContent = "Não foi possível preparar a foto.";
+        }
         return;
       }
 
