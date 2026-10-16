@@ -2003,5 +2003,81 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 <!-- VXR-CENARIO-V2-FIM -->
 
+
+<!-- VXR-FUNDO-REAL-INICIO -->
+<style id="vxr-fundo-real">
+/* Fundo cinematográfico independente do chat */
+.chat-column {
+  position: relative !important;
+  isolation: isolate;
+}
+
+/* Quando o arquivo existir, o cenário será exibido */
+.chat-column.vxr-fundo-ativo {
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(2,1,8,.12),
+      rgba(2,1,8,.04) 55%,
+      rgba(2,1,8,.65)
+    ),
+    url("assets/vxr2030/cenario.webp") !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+}
+
+/* Desativa as paisagens geométricas antigas */
+.chat-column.vxr-fundo-ativo .vxr-scene-v2,
+.chat-column.vxr-fundo-ativo .vxr-landscape,
+.chat-column.vxr-fundo-ativo::before,
+.chat-column.vxr-fundo-ativo::after {
+  display: none !important;
+}
+
+/* Preserva a leitura durante a conversa */
+.chat-column.vxr-fundo-ativo.vxr-conversando {
+  background-blend-mode: normal !important;
+}
+
+.chat-column.vxr-fundo-ativo.vxr-conversando::before {
+  display: block !important;
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(3,2,10,.78);
+  pointer-events: none;
+  z-index: 0;
+}
+</style>
+
+<script id="vxr-fundo-real-script">
+(function () {
+  function iniciar() {
+    const chat = document.querySelector(".chat-column");
+    if (!chat) return;
+
+    const imagem = new Image();
+
+    imagem.onload = function () {
+      chat.classList.add("vxr-fundo-ativo");
+    };
+
+    imagem.onerror = function () {
+      chat.classList.remove("vxr-fundo-ativo");
+    };
+
+    imagem.src = "assets/vxr2030/cenario.webp";
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", iniciar);
+  } else {
+    iniciar();
+  }
+})();
+</script>
+<!-- VXR-FUNDO-REAL-FIM -->
+
 </body>
 </html>
