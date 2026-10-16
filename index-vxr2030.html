@@ -760,14 +760,90 @@ function salvarMemoriaVexyra() {
     }
 }
 
-for (const msg of vexyraHistorico) {
-    const div = document.createElement("div");
-    div.className = msg.role === "user" ? "msg user" : "msg vexyra";
-    div.textContent =
-        (msg.role === "user" ? "Você: " : "VEXYRA: ") + msg.content;
-    chatLogs.appendChild(div);
+
+// VXR_CONVERSAS_V1
+// Preserva a conversa anterior e abre uma tela inicial limpa.
+const historicoAnteriorVXR = vexyraHistorico.slice();
+vexyraHistorico = [];
+chatLogs.innerHTML = "";
+
+function vxrNovaConversa() {
+    if (vexyraHistorico.length) {
+        try {
+            localStorage.setItem(
+                "vxrConversaAnterior",
+                JSON.stringify(vexyraHistorico)
+            );
+        } catch (e) {}
+    }
+
+    vexyraHistorico = [];
+    chatLogs.innerHTML = "";
+    document.querySelector(".chat-column")
+        ?.classList.remove("vxr-conversando");
+    document.querySelector(".chat-column")
+        ?.classList.add("vxr-inicial");
+    document.querySelector(".sidebar")
+        ?.classList.remove("vxr-open");
 }
-chatLogs.scrollTop = chatLogs.scrollHeight;
+
+function vxrAbrirHistorico() {
+    let mensagens = historicoAnteriorVXR;
+
+    try {
+        const salvo = JSON.parse(
+            localStorage.getItem("vxrConversaAnterior") || "null"
+        );
+        if (Array.isArray(salvo) && salvo.length) {
+            mensagens = salvo;
+        }
+    } catch (e) {}
+
+    if (!mensagens.length) {
+        alert("Nenhuma conversa anterior encontrada.");
+        return;
+    }
+
+    vexyraHistorico = mensagens.slice(-40);
+    chatLogs.innerHTML = "";
+
+    for (const msg of vexyraHistorico) {
+        const div = document.createElement("div");
+        div.className =
+            msg.role === "user" ? "msg user" : "msg vexyra";
+        div.textContent =
+            (msg.role === "user" ? "Você: " : "VEXYRA: ") +
+            msg.content;
+        chatLogs.appendChild(div);
+    }
+
+    chatLogs.scrollTop = chatLogs.scrollHeight;
+    document.querySelector(".sidebar")
+        ?.classList.remove("vxr-open");
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    const menu = document.querySelector(".sidebar");
+    if (!menu) return;
+
+    const acoes = document.createElement("div");
+    acoes.innerHTML = `
+      <button onclick="vxrNovaConversa()"
+        style="width:100%;padding:12px;margin-bottom:8px;
+        background:#281047;color:white;border:1px solid #9333ea;
+        border-radius:10px;cursor:pointer">
+        ＋ Nova conversa
+      </button>
+      <button onclick="vxrAbrirHistorico()"
+        style="width:100%;padding:12px;margin-bottom:15px;
+        background:#10101e;color:white;border:1px solid #333;
+        border-radius:10px;cursor:pointer">
+        ◷ Histórico anterior
+      </button>
+    `;
+
+    menu.prepend(acoes);
+});
 
 async function enviarMsg() {
             const input = document.getElementById('userInput');
