@@ -2107,5 +2107,217 @@ document.addEventListener("DOMContentLoaded", function () {
 }
 </style>
 
+
+<!-- VXR-PAISAGEM-CINEMA-V3 -->
+<style id="vxr-paisagem-cinema-v3">
+
+/* Remove a paisagem anterior */
+.chat-column .vxr-scene-v2,
+.chat-column .vxr-landscape {
+  display: none !important;
+}
+
+/* Fundo escuro, sem imagem antiga */
+.chat-column.vxr-fundo-ativo,
+.chat-column {
+  background:
+    radial-gradient(ellipse at 50% 65%,
+      rgba(79,20,128,.32),
+      transparent 52%),
+    linear-gradient(180deg,
+      #020106 0%,
+      #07030f 52%,
+      #11071c 75%,
+      #020106 100%) !important;
+}
+
+.vxr-cinema-v3 {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.vxr-cinema-v3 svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+#vxr-topbar,
+#vxr-welcome,
+.chat-logs,
+.chat-input-box {
+  position: relative;
+  z-index: 2;
+}
+
+.chat-column.vxr-conversando .vxr-cinema-v3 {
+  opacity: .16;
+}
+
+@media (max-width: 700px) {
+  .vxr-cinema-v3 svg {
+    width: 140%;
+    max-width: none;
+    transform: translateX(-14.3%);
+  }
+}
+</style>
+
+<script id="vxr-paisagem-cinema-v3-script">
+(function () {
+  function instalar() {
+    const chat = document.querySelector(".chat-column");
+    if (!chat) return;
+
+    const antiga = chat.querySelector(".vxr-cinema-v3");
+    if (antiga) return;
+
+    const cena = document.createElement("div");
+    cena.className = "vxr-cinema-v3";
+    cena.setAttribute("aria-hidden", "true");
+
+    cena.innerHTML = `
+<svg viewBox="0 0 1000 1200"
+     preserveAspectRatio="xMidYMid slice"
+     xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="cinema-glow">
+      <stop offset="0%" stop-color="#8025ca" stop-opacity=".38"/>
+      <stop offset="60%" stop-color="#4b1684" stop-opacity=".11"/>
+      <stop offset="100%" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+
+    <linearGradient id="cinema-rock" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#291437"/>
+      <stop offset="40%" stop-color="#120b1b"/>
+      <stop offset="100%" stop-color="#030207"/>
+    </linearGradient>
+
+    <linearGradient id="cinema-floor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#29103d"/>
+      <stop offset="35%" stop-color="#10091b"/>
+      <stop offset="100%" stop-color="#020106"/>
+    </linearGradient>
+
+    <filter id="cinema-blur">
+      <feGaussianBlur stdDeviation="24"/>
+    </filter>
+  </defs>
+
+  <!-- Luz atmosférica -->
+  <ellipse cx="500" cy="710" rx="420" ry="390"
+           fill="url(#cinema-glow)"/>
+
+  <!-- Feixe central discreto -->
+  <path d="M498 320 L502 320 L535 930 L465 930 Z"
+        fill="#8e34e0" opacity=".065"/>
+
+  <!-- Partículas -->
+  <g fill="#b36aff">
+    <circle cx="115" cy="290" r="1.5" opacity=".55"/>
+    <circle cx="230" cy="410" r="1.1" opacity=".65"/>
+    <circle cx="355" cy="250" r="1.4" opacity=".5"/>
+    <circle cx="720" cy="340" r="1.5" opacity=".6"/>
+    <circle cx="875" cy="460" r="1.2" opacity=".7"/>
+    <circle cx="615" cy="530" r="1.3" opacity=".45"/>
+  </g>
+
+  <!-- Cordilheira distante -->
+  <path d="M0 825
+           L48 797 L81 809 L121 770
+           L153 790 L191 751 L224 777
+           L265 743 L302 778 L346 762
+           L382 810 L432 793 L472 816
+           L530 805 L575 788 L618 815
+           L665 758 L708 779 L752 739
+           L795 771 L831 742 L877 786
+           L920 762 L965 801 L1000 783
+           L1000 970 L0 970 Z"
+        fill="#090612"/>
+
+  <!-- Rochas irregulares à esquerda -->
+  <path d="M0 545
+           L28 585 L51 574 L78 612
+           L96 603 L119 650 L145 638
+           L170 700 L196 684 L223 749
+           L255 775 L283 846 L315 913
+           L0 1000 Z"
+        fill="url(#cinema-rock)"/>
+
+  <path d="M0 545 L28 585 L51 574 L78 612
+           M96 603 L119 650 L145 638
+           M170 700 L196 684 L223 749"
+        fill="none" stroke="#6c328c"
+        stroke-width="2" opacity=".35"/>
+
+  <path d="M51 574 L67 677 L119 650
+           L130 760 L196 684
+           M145 638 L158 786 L255 775"
+        fill="none" stroke="#39204e"
+        stroke-width="3" opacity=".6"/>
+
+  <!-- Rochas irregulares à direita -->
+  <path d="M1000 525
+           L969 568 L947 553 L917 604
+           L895 590 L866 647 L843 633
+           L817 690 L787 678 L760 745
+           L730 770 L704 839 L677 920
+           L1000 1000 Z"
+        fill="url(#cinema-rock)"/>
+
+  <path d="M1000 525 L969 568 L947 553 L917 604
+           M895 590 L866 647 L843 633
+           M817 690 L787 678 L760 745"
+        fill="none" stroke="#713b98"
+        stroke-width="2" opacity=".34"/>
+
+  <path d="M947 553 L932 672 L866 647
+           L850 760 L787 678
+           M843 633 L829 787 L730 770"
+        fill="none" stroke="#3d2255"
+        stroke-width="3" opacity=".6"/>
+
+  <!-- Névoa no horizonte -->
+  <ellipse cx="500" cy="886" rx="420" ry="65"
+           fill="#8a2acb" opacity=".14"
+           filter="url(#cinema-blur)"/>
+
+  <!-- Chão escuro -->
+  <path d="M0 895 Q500 865 1000 895
+           L1000 1200 L0 1200 Z"
+        fill="url(#cinema-floor)"/>
+
+  <!-- Reflexos horizontais discretos -->
+  <g fill="none" stroke="#9d45df">
+    <path d="M170 920 Q500 910 830 920"
+          stroke-width="2" opacity=".38"/>
+    <path d="M260 955 Q500 963 740 955"
+          stroke-width="2" opacity=".25"/>
+    <path d="M350 1000 L650 1000"
+          stroke-width="2" opacity=".18"/>
+    <path d="M415 1050 L585 1050"
+          stroke-width="2" opacity=".12"/>
+  </g>
+
+  <!-- Reflexo luminoso central -->
+  <ellipse cx="500" cy="910" rx="210" ry="25"
+           fill="#a23bf0" opacity=".15"
+           filter="url(#cinema-blur)"/>
+</svg>`;
+
+    chat.prepend(cena);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", instalar);
+  } else {
+    instalar();
+  }
+})();
+</script>
+
 </body>
 </html>
