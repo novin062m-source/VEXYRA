@@ -3414,5 +3414,155 @@ document.addEventListener("DOMContentLoaded", function () {
 })();
 </script>
 
+
+<!-- VEXYRA-BLACK-STORM-V12 -->
+<style id="vexyra-black-storm-v12">
+
+/* Fundo preto, inclusive sobre cenários antigos */
+.chat-column,
+.chat-column.vxr-inicial,
+.chat-column.vxr-fundo-ativo {
+  background: #000 !important;
+  background-image: none !important;
+}
+
+/* Remove o VX e a frase de boas-vindas */
+#vxr-welcome {
+  display: none !important;
+}
+
+/* Esconde os cenários e efeitos antigos */
+.vxr-scene-v2,
+.vxr-landscape,
+#vx-clouds-v9,
+#vx-logo-v9,
+#vx-logo-v10 {
+  display: none !important;
+}
+
+/* Remove elementos decorativos do fundo */
+.chat-column::before,
+.chat-column::after,
+.chat-column.vxr-inicial::before,
+.chat-column.vxr-inicial::after {
+  display: none !important;
+}
+
+/* Cabeçalho preto */
+#vxr-topbar {
+  background: #000 !important;
+  z-index: 100 !important;
+}
+
+#vxr-topbar strong {
+  color: #d6a5ff !important;
+  letter-spacing: 5px !important;
+  text-shadow: 0 0 12px #8c31ff !important;
+}
+
+/* Área das mensagens continua funcionando */
+.chat-logs {
+  position: relative !important;
+  z-index: 10 !important;
+}
+
+/* Campo de chat permanece visível */
+.chat-input-box {
+  position: relative !important;
+  z-index: 100 !important;
+}
+
+/* Camada exclusiva dos relâmpagos */
+#vexyra-storm-v12 {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 2;
+}
+
+#vexyra-storm-v12 svg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  filter:
+    drop-shadow(0 0 5px white)
+    drop-shadow(0 0 14px rgba(220,220,255,.8));
+  animation: vx-storm-flash 3s infinite;
+}
+
+#vexyra-storm-v12 svg:nth-child(2) {
+  animation-delay: 1.5s;
+  transform: scaleX(-1);
+}
+
+@keyframes vx-storm-flash {
+  0%, 4%, 7%, 100% { opacity: 0; }
+  1%, 3%, 5% { opacity: 1; }
+  2%, 6% { opacity: .15; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #vexyra-storm-v12 svg {
+    animation: none !important;
+  }
+}
+</style>
+
+<script id="vexyra-black-storm-script">
+(function () {
+  function iniciar() {
+    const chat = document.querySelector(".chat-column");
+    if (!chat) return;
+
+    const titulo = document.querySelector("#vxr-topbar strong");
+    if (titulo) titulo.textContent = "VEXYRA";
+
+    if (document.getElementById("vexyra-storm-v12")) return;
+
+    const tempestade = document.createElement("div");
+    tempestade.id = "vexyra-storm-v12";
+
+    tempestade.innerHTML = `
+      <svg viewBox="0 0 400 800" preserveAspectRatio="none"
+           aria-hidden="true">
+        <path
+          d="M55 0 L90 110 L70 165 L125 245 L105 300
+             L160 385 L145 450"
+          fill="none"
+          stroke="white"
+          stroke-width="2.5"
+          stroke-linejoin="round"/>
+        <path
+          d="M125 245 L180 270 L195 330"
+          fill="none"
+          stroke="white"
+          stroke-width="1.2"/>
+      </svg>
+
+      <svg viewBox="0 0 400 800" preserveAspectRatio="none"
+           aria-hidden="true">
+        <path
+          d="M65 0 L105 90 L85 145 L145 220
+             L120 295 L175 365"
+          fill="none"
+          stroke="white"
+          stroke-width="2.5"
+          stroke-linejoin="round"/>
+      </svg>
+    `;
+
+    chat.prepend(tempestade);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", iniciar);
+  } else {
+    iniciar();
+  }
+})();
+</script>
+
 </body>
 </html>
