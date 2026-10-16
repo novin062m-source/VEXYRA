@@ -3330,5 +3330,89 @@ document.addEventListener("DOMContentLoaded", function () {
 })();
 </script>
 
+
+<!-- VX-CENTRO-V11 -->
+<style id="vx-centro-v11">
+
+/* Nome VEXYRA no cabeçalho */
+#vxr-topbar strong {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  font-size: 19px !important;
+  font-weight: 800 !important;
+  letter-spacing: 5px !important;
+  color: #d6a5ff !important;
+  text-shadow:
+    0 0 8px #9a38ff,
+    0 0 20px rgba(139, 40, 255, .65);
+}
+
+/* Centraliza o VX na área do chat */
+.chat-column.vxr-inicial #vxr-welcome {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+
+  width: 94% !important;
+  max-width: 600px !important;
+
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 16px !important;
+
+  z-index: 40 !important;
+}
+
+/* VX grande, mas sem sair das bordas */
+.chat-column.vxr-inicial #vx-logo-v10 {
+  display: block !important;
+  width: min(76vw, 420px) !important;
+  max-width: 100% !important;
+  height: auto !important;
+  margin: 0 auto !important;
+}
+
+/* Frase centralizada */
+.chat-column.vxr-inicial #vxr-welcome h2 {
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 8px !important;
+  text-align: center !important;
+  font-size: clamp(16px, 4vw, 21px) !important;
+  line-height: 1.5 !important;
+}
+
+/* Mantém o cabeçalho por cima do cenário */
+#vxr-topbar {
+  position: relative !important;
+  z-index: 100 !important;
+}
+
+</style>
+
+<script id="vx-centro-v11-script">
+(function () {
+  function iniciar() {
+    const nome = document.querySelector("#vxr-topbar strong");
+    if (nome) nome.textContent = "VEXYRA";
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", iniciar);
+  } else {
+    iniciar();
+  }
+})();
+</script>
+
 </body>
 </html>
