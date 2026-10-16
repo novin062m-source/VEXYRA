@@ -1709,5 +1709,67 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 
+
+<!-- VXR-FORMATADOR-INICIO -->
+<style>
+#chatLogs .msg {
+  white-space: pre-wrap !important;
+  overflow-wrap: anywhere;
+  line-height: 1.6 !important;
+}
+</style>
+<script>
+(function () {
+  function limparMarkdown(texto) {
+    return texto
+      .replace(/\r/g, '')
+      .replace(/^\s{0,3}#{1,6}\s*/gm, '')
+      .replace(/\*{1,3}/g, '')
+      .replace(/^\s*[-_]{3,}\s*$/gm, '')
+      .replace(/^\s*>\s?/gm, '')
+      .replace(/^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/gm, '')
+      .replace(/^\s*\|\s*/gm, '')
+      .replace(/\s*\|\s*$/gm, '')
+      .replace(/\s*\|\s*/g, ' — ')
+      .replace(/\n{3,}/g, '\n\n');
+  }
+
+  function corrigirMensagens() {
+    const chat = document.getElementById('chatLogs');
+    if (!chat) return;
+
+    chat.querySelectorAll('.msg.vexyra').forEach(function (msg) {
+      const original = msg.textContent || '';
+      const limpo = limparMarkdown(original);
+
+      if (original !== limpo) {
+        msg.textContent = limpo;
+      }
+    });
+  }
+
+  function iniciar() {
+    const chat = document.getElementById('chatLogs');
+    if (!chat) return;
+
+    corrigirMensagens();
+
+    const observer = new MutationObserver(corrigirMensagens);
+    observer.observe(chat, {
+      childList: true,
+      subtree: true,
+      characterData: true
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', iniciar);
+  } else {
+    iniciar();
+  }
+})();
+</script>
+<!-- VXR-FORMATADOR-FIM -->
+
 </body>
 </html>
