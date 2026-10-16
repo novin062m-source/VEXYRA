@@ -570,6 +570,98 @@ body {
 }
 </style>
 
+
+<style id="vxr-menu-fix-v2">
+/* MENU VXR 2030 */
+.sidebar {
+  box-sizing: border-box !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+  padding: 24px 16px !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+}
+
+.sidebar > * {
+  flex-shrink: 0 !important;
+}
+
+.sidebar .logo {
+  font-size: 21px !important;
+  letter-spacing: 2px !important;
+  margin: 12px 0 20px !important;
+  overflow-wrap: anywhere;
+}
+
+.sidebar .nav-btn {
+  display: flex !important;
+  width: 100% !important;
+  min-height: 42px;
+  padding: 12px !important;
+  font-size: 13px !important;
+  white-space: normal !important;
+}
+
+.sidebar .menu-title {
+  padding-top: 18px !important;
+}
+
+.sidebar button {
+  display: block !important;
+  width: 100% !important;
+  min-height: 44px;
+  font-size: 13px !important;
+  text-align: left;
+}
+
+#vxr-fechar-menu {
+  background: transparent !important;
+  border: 0 !important;
+  color: #ddd !important;
+  font-size: 25px !important;
+  text-align: right !important;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    display: none !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    width: min(82vw, 300px) !important;
+    height: 100dvh !important;
+    z-index: 10002 !important;
+    background: #080711 !important;
+    border-right: 1px solid #7c3aed !important;
+    transform: none !important;
+  }
+
+  .sidebar.vxr-open {
+    display: flex !important;
+  }
+
+  html, body {
+    overflow-x: hidden !important;
+  }
+}
+
+#vxr-menu-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.7);
+  z-index: 10001;
+}
+
+body.vxr-menu-aberto #vxr-menu-overlay {
+  display: block;
+}
+</style>
+
 </head>
 <body>
 
@@ -1310,6 +1402,39 @@ document.addEventListener("DOMContentLoaded", function () {
   observador.observe(logs, { childList: true });
 
   atualizarTela();
+});
+</script>
+
+
+<div id="vxr-menu-overlay" onclick="vxrFecharMenu()"></div>
+
+<script>
+function vxrFecharMenu() {
+  document.querySelector(".sidebar")?.classList.remove("vxr-open");
+  document.body.classList.remove("vxr-menu-aberto");
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  const menu = document.querySelector(".sidebar");
+  if (!menu) return;
+
+  const fechar = document.createElement("button");
+  fechar.id = "vxr-fechar-menu";
+  fechar.textContent = "×";
+  fechar.onclick = vxrFecharMenu;
+  menu.prepend(fechar);
+
+  const botao = document.querySelector("#vxr-topbar button");
+  if (botao) {
+    botao.onclick = function () {
+      const aberto = menu.classList.toggle("vxr-open");
+      document.body.classList.toggle("vxr-menu-aberto", aberto);
+    };
+  }
+
+  menu.addEventListener("click", function (e) {
+    if (e.target.closest(".nav-btn")) vxrFecharMenu();
+  });
 });
 </script>
 
