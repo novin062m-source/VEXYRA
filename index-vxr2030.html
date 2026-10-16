@@ -800,6 +800,33 @@ body.vxr-menu-aberto #vxr-menu-overlay {
 </style>
 <!-- /VXR-CENARIO-2030 -->
 
+
+<style id="vxr-logo-angular-style">
+#vxr-welcome .vxr-logo-angular {
+  width: min(85vw, 570px) !important;
+  max-width: 100%;
+  font-size: 0 !important;
+  padding: 0 !important;
+  transform: none !important;
+  filter: none !important;
+  background: none !important;
+  -webkit-text-fill-color: initial !important;
+}
+#vxr-welcome .vxr-logo-angular svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 0 22px #8520ff99);
+}
+@media (max-width:700px) {
+  #vxr-welcome .vxr-logo-angular {
+    width: min(76vw, 370px) !important;
+  }
+  #vxr-welcome h2 {
+    font-size: 19px !important;
+  }
+}
+</style>
 </head>
 <body>
 
@@ -873,7 +900,38 @@ document.addEventListener("DOMContentLoaded", function () {
                 <div class="tab-btn">Pesquisar</div>
             </div>
             <div id="vxr-welcome">
-      <div class="vxr-symbol">VXR</div>
+      <div class="vxr-symbol vxr-logo-angular" aria-label="VXR">
+<svg viewBox="0 0 600 210" role="img" aria-label="VXR">
+<defs>
+  <linearGradient id="vxrMetal" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#f3baff"/>
+    <stop offset="35%" stop-color="#a32dff"/>
+    <stop offset="65%" stop-color="#5811c4"/>
+    <stop offset="100%" stop-color="#d278ff"/>
+  </linearGradient>
+  <filter id="vxrGlow">
+    <feGaussianBlur stdDeviation="5" result="blur"/>
+    <feMerge>
+      <feMergeNode in="blur"/>
+      <feMergeNode in="SourceGraphic"/>
+    </feMerge>
+  </filter>
+</defs>
+<g fill="url(#vxrMetal)" stroke="#d99aff"
+   stroke-width="2" filter="url(#vxrGlow)">
+  <path d="M20 32 L75 32 L165 146 L250 32 L305 32 L165 198 Z"/>
+  <path d="M235 32 L295 32 L355 92 L415 32 L475 32
+           L385 119 L470 198 L408 198 L355 146
+           L300 198 L240 198 L325 119 Z"/>
+  <path d="M440 32 L555 32 Q590 32 590 69
+           L590 91 Q590 121 552 128
+           L595 198 L535 198 L458 104
+           L535 104 Q547 104 547 91
+           L547 78 Q547 72 534 72
+           L440 72 Z"/>
+</g>
+</svg>
+</div>
       <h2>Como posso ajudar você hoje?</h2>
     </div>
     <div class="chat-logs" id="chatLogs">
