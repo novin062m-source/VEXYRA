@@ -2079,5 +2079,33 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 <!-- VXR-FUNDO-REAL-FIM -->
 
+
+<!-- VXR-AJUSTE-ESCURIDAO -->
+<style id="vxr-ajuste-escuridao">
+.chat-column.vxr-fundo-ativo {
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(1,1,6,.90) 0%,
+      rgba(3,1,9,.83) 28%,
+      rgba(8,2,18,.68) 55%,
+      rgba(3,1,8,.82) 78%,
+      rgba(1,1,5,.95) 100%
+    ),
+    url("assets/vxr2030/cenario.webp?v=20261015-2345") !important;
+}
+
+/* Recupera o cenário SVG, mas com intensidade menor */
+.chat-column.vxr-fundo-ativo .vxr-scene-v2 {
+  display: block !important;
+  opacity: .55;
+}
+
+/* Mantém as mensagens legíveis */
+.chat-column.vxr-fundo-ativo.vxr-conversando .vxr-scene-v2 {
+  opacity: .08;
+}
+</style>
+
 </body>
 </html>
