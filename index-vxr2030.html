@@ -1188,6 +1188,27 @@ body.vxr-menu-aberto #vxr-menu-overlay {
 
 </style>
 
+
+<!-- VX-REMOVE-LINHA-V16 -->
+<style>
+/* Remove a linha decorativa acima do campo */
+.chat-column.vxr-inicial #vx-clouds-v9::after,
+.chat-column.vxr-inicial .vxr-scene-v2,
+.chat-column.vxr-inicial .vxr-landscape {
+  display: none !important;
+}
+
+.chat-column.vxr-inicial #vxr-welcome::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* Mantém o campo de chat intacto */
+.chat-input-box {
+  box-shadow: none !important;
+}
+</style>
+
 </head>
 <body>
 
