@@ -3960,5 +3960,122 @@ html, body, .main-wrapper,
 })();
 </script>
 
+
+<!-- VEXYRA-ANEXOS-VOZ-V15 -->
+<script id="vexyra-anexos-voz-v15">
+(function () {
+  function iniciar() {
+    const arquivo = document.getElementById("vx-file-v14");
+    const nome = document.getElementById("vx-file-name-v14");
+    const input = document.getElementById("userInput");
+    const microfone = document.getElementById("vx-mic-v14");
+
+    if (!arquivo || !nome || !input || !microfone) return;
+
+    arquivo.accept = "image/*,.txt,.md,.csv,.json";
+
+    arquivo.onchange = async function () {
+      const selecionado = arquivo.files?.[0];
+      if (!selecionado) return;
+
+      nome.style.display = "block";
+
+      if (selecionado.size > 2 * 1024 * 1024) {
+        nome.textContent = "Arquivo muito grande. Limite: 2 MB.";
+        arquivo.value = "";
+        return;
+      }
+
+      if (selecionado.type.startsWith("image/")) {
+        nome.textContent =
+          "Foto selecionada: " + selecionado.name +
+          ". A análise de imagens ainda precisa ser ativada.";
+        return;
+      }
+
+      const extensao = selecionado.name
+        .split(".").pop().toLowerCase();
+
+      if (!["txt", "md", "csv", "json"].includes(extensao)) {
+        nome.textContent = "Formato ainda não suportado.";
+        return;
+      }
+
+      try {
+        const conteudo = await selecionado.text();
+
+        if (conteudo.length > 7000) {
+          nome.textContent =
+            "Arquivo muito longo. Use um texto de até 7.000 caracteres.";
+          return;
+        }
+
+        input.value =
+          "Analise este arquivo (" + selecionado.name + "):\n\n" +
+          conteudo;
+
+        nome.textContent =
+          "Texto carregado! Confira e toque em enviar.";
+      } catch (erro) {
+        nome.textContent = "Erro ao ler arquivo.";
+      }
+    };
+
+    const Reconhecimento =
+      window.SpeechRecognition ||
+      window.webkitSpeechRecognition;
+
+    if (Reconhecimento) {
+      const reconhecimento = new Reconhecimento();
+      reconhecimento.lang = "pt-BR";
+      reconhecimento.interimResults = false;
+
+      microfone.onclick = function () {
+        try {
+          reconhecimento.start();
+        } catch (erro) {
+          reconhecimento.stop();
+        }
+      };
+
+      reconhecimento.onstart = function () {
+        microfone.classList.add("vx-gravando");
+      };
+
+      reconhecimento.onend = function () {
+        microfone.classList.remove("vx-gravando");
+      };
+
+      reconhecimento.onresult = function (evento) {
+        const texto = evento.results[0][0].transcript;
+        input.value = (input.value + " " + texto).trim();
+        input.focus();
+      };
+
+      reconhecimento.onerror = function (evento) {
+        microfone.classList.remove("vx-gravando");
+        nome.style.display = "block";
+        nome.textContent =
+          "Falha no reconhecimento de voz: " + evento.error +
+          ". Podemos usar transcrição de áudio pelo servidor.";
+      };
+    } else {
+      microfone.onclick = function () {
+        nome.style.display = "block";
+        nome.textContent =
+          "Este navegador não oferece reconhecimento de voz. " +
+          "A transcrição pelo servidor ainda precisa ser integrada.";
+      };
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", iniciar);
+  } else {
+    iniciar();
+  }
+})();
+</script>
+
 </body>
 </html>
